@@ -1,0 +1,8 @@
+{
+  "name": "workflow-name",
+  "description": "One sentence: the job this workflow takes off your plate.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Gabriel Omat"
+  }
+}

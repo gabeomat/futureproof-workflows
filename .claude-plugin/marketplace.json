@@ -1,0 +1,11 @@
+{
+  "name": "futureproof-workflows",
+  "owner": {
+    "name": "Gabriel Omat"
+  },
+  "metadata": {
+    "description": "Ready-to-install Claude Code workflows from Gabriel Omat. Each workflow installs on its own.",
+    "version": "0.1.0"
+  },
+  "plugins": []
+}
