@@ -5,7 +5,13 @@
   },
   "metadata": {
     "description": "Ready-to-install Claude Code workflows from Gabriel Omat. Each workflow installs on its own.",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "meeting-follow-up",
+      "source": "./plugins/meeting-follow-up",
+      "description": "Turns a meeting transcript into a plain, facts-only follow-up email with a summary and next steps, labeled as AI-drafted."
+    }
+  ]
 }
