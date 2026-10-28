@@ -1,0 +1,8 @@
+{
+  "name": "meeting-follow-up",
+  "description": "Turns a meeting transcript into a plain, facts-only follow-up email with a summary and next steps, labeled as AI-drafted.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Gabriel Omat"
+  }
+}

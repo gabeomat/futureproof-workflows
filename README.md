@@ -32,4 +32,4 @@ Open `/plugin` and update the library to see the latest workflows.
 
 | Workflow | The job it takes off your plate |
 |---|---|
-| *First workflow coming soon* | |
+| [Meeting follow-up](plugins/meeting-follow-up) | Turns a meeting transcript into a ready-to-send follow-up email: what you covered, what was decided, and who does what next |
