@@ -1,0 +1,11 @@
+{
+  "name": "Dragon Library",
+  "mode": "dark",
+  "alt": "A small green dragon asleep on a pile of books while candles flicker",
+  "scene": "scene.svg",
+  "colors": {
+    "accent": "#7fd6a0",
+    "light": { "page": "#f3efe6", "text": "#2a2433" },
+    "dark": { "page": "#1b1430", "text": "#f2ecff" }
+  }
+}

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+<!-- A starting point. Replace the colors, the shapes and the motion; keep the structure:
+     defs, one style block, a filled background, then layers from back to front. -->
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#bfe6ff"/><stop offset="1" stop-color="#ffe9c9"/>
+</linearGradient>
+<radialGradient id="glow"><stop offset="0" stop-color="#fff6c2" stop-opacity=".9"/><stop offset="1" stop-color="#ffd15c" stop-opacity="0"/></radialGradient>
+<g id="cloud"><ellipse rx="78" ry="26"/><circle cx="-34" cy="-18" r="27"/><circle cx="10" cy="-30" r="36"/><circle cx="48" cy="-12" r="24"/></g>
+</defs>
+<style>
+.drift{animation:drift 90s linear infinite}.d2{animation-duration:130s;animation-delay:-60s}
+@keyframes drift{from{transform:translateX(-260px)}to{transform:translateX(1860px)}}
+.pulse{animation:pulse 5s ease-in-out infinite alternate}
+@keyframes pulse{from{transform:scale(.92);opacity:.75}to{transform:scale(1.1);opacity:1}}
+.sway{animation:sway 4s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(-6deg)}to{transform:rotate(7deg)}}
+.bob{animation:bob 3s ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(-8px)}to{transform:translateY(8px)}}
+.blink{animation:blink 5s infinite}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<!-- 1. background: always fill the whole canvas -->
+<rect width="1600" height="1000" fill="url(#sky)"/>
+<!-- 2. far layer: a glow in the top band, to one side -->
+<g transform="translate(1220 240)"><g class="pulse"><circle r="200" fill="url(#glow)"/></g><circle r="70" fill="#ffd34d"/></g>
+<!-- 3. things that drift: position on the outer group, motion on the inner one -->
+<g fill="#fff" opacity=".9">
+<g transform="translate(0 160)"><g class="drift"><use href="#cloud"/></g></g>
+<g transform="translate(0 280) scale(.7)"><g class="drift d2"><use href="#cloud"/></g></g>
+</g>
+<!-- 4. ground layers: each path runs to the bottom corners with V1000H0Z -->
+<path d="M0 700Q300 600 640 690T1200 670T1600 630V1000H0Z" fill="#c4e79a"/>
+<path d="M0 840Q400 770 800 830T1600 810V1000H0Z" fill="#72c25d"/>
+<!-- 5. a character on the left third, drawn around its feet at 0,0 -->
+<g transform="translate(240 818)"><g class="bob">
+<ellipse cy="-40" rx="46" ry="40" fill="#ff9fbe"/>
+<g transform="translate(0 -48)"><g class="blink"><circle cx="-14" r="7" fill="#2a2433"/><circle cx="14" r="7" fill="#2a2433"/><circle cx="-12" cy="-2" r="2.4" fill="#fff"/><circle cx="16" cy="-2" r="2.4" fill="#fff"/></g></g>
+<path d="M-9 -30q9 8 18 0" fill="none" stroke="#2a2433" stroke-width="3.5" stroke-linecap="round"/>
+<circle cx="-28" cy="-34" r="7" fill="#ff7fa8" opacity=".6"/><circle cx="28" cy="-34" r="7" fill="#ff7fa8" opacity=".6"/>
+</g></g>
+<!-- 6. small foreground motion on the right third: a plant swaying around its base -->
+<g transform="translate(1380 822)"><g class="sway"><path d="M0 0V-70" stroke="#3f9a4a" stroke-width="6" stroke-linecap="round"/><circle cy="-82" r="16" fill="#b79cff"/><circle cy="-82" r="6" fill="#ffd34d"/></g></g>
+</svg>
