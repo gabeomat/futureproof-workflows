@@ -5,13 +5,18 @@
   },
   "metadata": {
     "description": "Ready-to-install Claude Code workflows from Gabriel Omat. Each workflow installs on its own.",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "plugins": [
     {
       "name": "meeting-follow-up",
       "source": "./plugins/meeting-follow-up",
       "description": "Turns a meeting transcript into a plain, facts-only follow-up email with a summary and next steps, labeled as AI-drafted."
+    },
+    {
+      "name": "animated-wallpapers",
+      "source": "./plugins/animated-wallpapers",
+      "description": "Puts an animated wallpaper behind your Claude chats, with six to pick from, and draws new ones from a description."
     }
   ]
 }

@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+<defs>
+<radialGradient id="space" cx=".3" cy=".25" r="1"><stop offset="0" stop-color="#2b1568"/><stop offset=".5" stop-color="#140b3a"/><stop offset="1" stop-color="#06041a"/></radialGradient>
+<radialGradient id="neb1"><stop offset="0" stop-color="#ff5fa8" stop-opacity=".34"/><stop offset="1" stop-color="#ff5fa8" stop-opacity="0"/></radialGradient>
+<radialGradient id="neb2"><stop offset="0" stop-color="#3fe0d0" stop-opacity=".26"/><stop offset="1" stop-color="#3fe0d0" stop-opacity="0"/></radialGradient>
+<linearGradient id="planet" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb86b"/><stop offset="1" stop-color="#ff6f91"/></linearGradient>
+<linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9dfbe9" stop-opacity=".7"/><stop offset="1" stop-color="#9dfbe9" stop-opacity="0"/></linearGradient>
+<linearGradient id="trail" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#bff"/></linearGradient>
+<clipPath id="disc"><circle r="86"/></clipPath>
+<path id="star" d="M0-7L2-2L7 0L2 2L0 7L-2 2L-7 0L-2-2Z"/>
+</defs>
+<style>
+.tw{animation:tw 3s ease-in-out infinite alternate}.w2{animation-duration:4.2s;animation-delay:-1.4s}.w3{animation-duration:2.3s;animation-delay:-.8s}.w4{animation-duration:5s;animation-delay:-3s}
+@keyframes tw{from{opacity:.2;transform:scale(.6)}to{opacity:1;transform:scale(1.25)}}
+.neb{animation:neb 14s ease-in-out infinite alternate}.n2{animation-duration:19s;animation-delay:-6s}
+@keyframes neb{from{transform:scale(.9);opacity:.7}to{transform:scale(1.15);opacity:1}}
+.bob{animation:bob 6s ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(-14px) rotate(-2deg)}to{transform:translateY(14px) rotate(2deg)}}
+.bands{animation:bands 16s linear infinite}
+@keyframes bands{from{transform:translateX(0)}to{transform:translateX(-172px)}}
+.orbit{animation:orbit 18s linear infinite}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.launch{animation:launch 20s linear infinite}
+@keyframes launch{0%{transform:translate(0,0)}55%,100%{transform:translate(-1500px,-1300px)}}
+.flame{animation:flame .16s ease-in-out infinite alternate}
+@keyframes flame{from{transform:scale(1,.8)}to{transform:scale(1.1,1.3)}}
+.puff{animation:puff 1.2s ease-out infinite}.q2{animation-delay:-.4s}.q3{animation-delay:-.8s}
+@keyframes puff{from{transform:translateY(0) scale(.5);opacity:.8}to{transform:translateY(90px) scale(1.5);opacity:0}}
+.ufo{animation:ufo 7s ease-in-out infinite}
+@keyframes ufo{0%,100%{transform:translate(0,0) rotate(-4deg)}50%{transform:translate(-50px,26px) rotate(5deg)}}
+.beam{animation:beamp 2.4s ease-in-out infinite alternate}
+@keyframes beamp{from{opacity:.25}to{opacity:.95}}
+.lite{animation:lite 1.5s steps(1) infinite}.t2{animation-delay:-.5s}.t3{animation-delay:-1s}
+@keyframes lite{0%{opacity:1}34%{opacity:.25}}
+.wave{animation:wave .6s ease-in-out infinite alternate}
+@keyframes wave{from{transform:rotate(-24deg)}to{transform:rotate(24deg)}}
+.blink{animation:blink 4.6s infinite}.k2{animation-delay:-2s;animation-duration:5.6s}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.tumble{animation:tumble 16s ease-in-out infinite alternate}
+@keyframes tumble{from{transform:translate(0,0) rotate(-16deg)}to{transform:translate(70px,-50px) rotate(14deg)}}
+.kick{animation:kick 1.8s ease-in-out infinite alternate}.kd{animation-delay:-.9s}
+@keyframes kick{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+.comet{animation:comet 15s linear infinite}
+@keyframes comet{0%,80%{transform:translate(0,0);opacity:0}82%{opacity:1}96%{opacity:1}100%{transform:translate(-640px,260px);opacity:0}}
+.spin{animation:orbit 60s linear infinite}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<rect width="1600" height="1000" fill="url(#space)"/>
+<g transform="translate(1100 620)"><g class="neb"><ellipse rx="520" ry="330" fill="url(#neb1)"/></g></g>
+<g transform="translate(420 520)"><g class="neb n2"><ellipse rx="460" ry="300" fill="url(#neb2)"/></g></g>
+<g fill="#fff">
+<g transform="translate(90 120)"><g class="tw"><use href="#star"/></g></g><g transform="translate(560 90) scale(.8)"><g class="tw w2"><use href="#star"/></g></g><g transform="translate(720 220) scale(.6)"><g class="tw w3"><use href="#star"/></g></g><g transform="translate(900 110) scale(1.1)" fill="#ffe27a"><g class="tw w4"><use href="#star"/></g></g><g transform="translate(1060 240) scale(.7)"><g class="tw"><use href="#star"/></g></g><g transform="translate(1520 120)" fill="#9dfbe9"><g class="tw w2"><use href="#star"/></g></g><g transform="translate(1480 560) scale(.7)"><g class="tw w3"><use href="#star"/></g></g><g transform="translate(620 460) scale(.6)"><g class="tw w4"><use href="#star"/></g></g><g transform="translate(120 480) scale(.8)" fill="#ff9fd0"><g class="tw w2"><use href="#star"/></g></g><g transform="translate(860 640) scale(.6)"><g class="tw"><use href="#star"/></g></g><g transform="translate(1180 800) scale(.9)" fill="#ffe27a"><g class="tw w3"><use href="#star"/></g></g><g transform="translate(560 860) scale(.7)"><g class="tw w4"><use href="#star"/></g></g><g transform="translate(60 900) scale(.6)"><g class="tw"><use href="#star"/></g></g><g transform="translate(1000 420) scale(.5)"><g class="tw w2"><use href="#star"/></g></g>
+<circle cx="200" cy="60" r="1.6"/><circle cx="470" cy="200" r="1.4"/><circle cx="640" cy="40" r="1.6"/><circle cx="820" cy="320" r="1.4"/><circle cx="1000" cy="60" r="1.6"/><circle cx="1180" cy="140" r="1.4"/><circle cx="1400" cy="60" r="1.6"/><circle cx="1560" cy="300" r="1.4"/><circle cx="1420" cy="720" r="1.6"/><circle cx="1000" cy="900" r="1.4"/><circle cx="760" cy="760" r="1.6"/><circle cx="440" cy="700" r="1.4"/><circle cx="60" cy="660" r="1.6"/><circle cx="520" cy="340" r="1.4"/><circle cx="1280" cy="460" r="1.4"/><circle cx="700" cy="560" r="1.4"/><circle cx="940" cy="520" r="1.4"/><circle cx="1560" cy="880" r="1.6"/>
+</g>
+<g transform="translate(1260 90)"><g class="comet"><rect x="0" y="-2.5" width="170" height="5" rx="2.5" fill="url(#trail)" transform="rotate(-22) scale(-1 1) translate(-170 0)"/><circle r="5" fill="#dff"/></g></g>
+<!-- ringed planet -->
+<g transform="translate(270 250)"><g class="bob">
+<ellipse rx="158" ry="36" fill="none" stroke="#ffe08a" stroke-width="12" transform="rotate(-18)"/>
+<circle r="86" fill="url(#planet)"/>
+<g clip-path="url(#disc)"><g class="bands" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="12" stroke-linecap="round"><path d="M-90-40q43-16 86 0t86 0t86 0t86 0t86 0M-90 4q43-16 86 0t86 0t86 0t86 0t86 0M-90 46q43-16 86 0t86 0t86 0t86 0t86 0"/></g><circle cx="46" cy="46" r="110" fill="#5a1f6a" opacity=".22"/></g>
+<path d="M-158 0A158 36 0 0 0 158 0" fill="none" stroke="#ffe08a" stroke-width="12" stroke-linecap="round" transform="rotate(-18)"/>
+<g class="orbit"><circle cx="210" r="16" fill="#9dfbe9"/><circle cx="205" cy="-4" r="4" fill="#6fd8c6"/></g>
+</g></g>
+<!-- small moon bottom right -->
+<g transform="translate(1470 860)"><g class="spin"><circle r="74" fill="#7c6cf0"/><circle cx="-26" cy="-22" r="16" fill="#6657d6"/><circle cx="28" cy="18" r="22" fill="#6657d6"/><circle cx="-14" cy="38" r="9" fill="#6657d6"/><circle cx="34" cy="-36" r="8" fill="#6657d6"/></g></g>
+<!-- rocket -->
+<g transform="translate(1500 1120)"><g class="launch"><g transform="rotate(-49)">
+<g transform="translate(0 62)"><g class="puff"><circle r="12" fill="#fff" opacity=".6"/></g><g class="puff q2"><circle r="12" fill="#fff" opacity=".6"/></g><g class="puff q3"><circle r="12" fill="#fff" opacity=".6"/></g><g class="flame"><path d="M-16 0Q0 62 16 0Z" fill="#ff9f43"/><path d="M-8 0Q0 36 8 0Z" fill="#ffe27a"/></g></g>
+<path d="M-26 26L-50 66L-22 54ZM26 26L50 66L22 54Z" fill="#ff5f7e"/>
+<path d="M0-84C34-50 34 20 24 62H-24C-34 20-34-50 0-84Z" fill="#f4f1ff"/><path d="M0-84C16-68 25-48 28-30H-28C-25-48-16-68 0-84Z" fill="#ff5f7e"/>
+<circle cy="-2" r="16" fill="#3fd0ff"/><circle cy="-2" r="16" fill="none" stroke="#b7b0e8" stroke-width="5"/><circle cx="-5" cy="-7" r="4" fill="#fff" opacity=".8"/>
+<rect x="-24" y="52" width="48" height="10" rx="4" fill="#b7b0e8"/>
+</g></g></g>
+<!-- ufo with alien -->
+<g transform="translate(1290 300)"><g class="ufo">
+<g class="beam"><path d="M-44 30L-120 330H120L44 30Z" fill="url(#beam)"/></g>
+<path d="M-56-10a56 60 0 0 1 112 0z" fill="#aef4ff" opacity=".45"/>
+<g transform="translate(0 -22)">
+<path d="M-14-26q-8-20-18-22M14-26q8-20 18-22" fill="none" stroke="#6fe08a" stroke-width="4" stroke-linecap="round"/><circle cx="-32" cy="-49" r="5" fill="#ffe27a"/><circle cx="32" cy="-49" r="5" fill="#ffe27a"/>
+<g transform="translate(26 6)"><g class="wave"><path d="M0 0l16-18" stroke="#6fe08a" stroke-width="7" stroke-linecap="round"/><circle cx="18" cy="-20" r="6" fill="#6fe08a"/></g></g>
+<ellipse rx="30" ry="27" fill="#7df09a"/>
+<g transform="translate(0 -4)"><g class="blink"><ellipse cx="-12" rx="8" ry="11" fill="#1c1440"/><ellipse cx="12" rx="8" ry="11" fill="#1c1440"/><circle cx="-14" cy="-4" r="3" fill="#fff"/><circle cx="10" cy="-4" r="3" fill="#fff"/></g></g>
+<path d="M-7 13q7 6 14 0" fill="none" stroke="#1c1440" stroke-width="3" stroke-linecap="round"/>
+</g>
+<path d="M-56-10a56 60 0 0 1 112 0" fill="none" stroke="#dffbff" stroke-width="4" opacity=".8"/>
+<ellipse cy="8" rx="124" ry="30" fill="#b79cff"/><ellipse cy="2" rx="124" ry="24" fill="#d3c2ff"/><ellipse cy="-8" rx="62" ry="10" fill="#8a6fd8" opacity=".6"/>
+<g class="lite"><circle cx="-84" cy="10" r="8" fill="#ffe27a"/></g><g class="lite t2"><circle cx="-30" cy="20" r="8" fill="#ff7fb0"/></g><g class="lite t3"><circle cx="30" cy="20" r="8" fill="#7ff5e0"/></g><g class="lite"><circle cx="84" cy="10" r="8" fill="#ffe27a"/></g>
+</g></g>
+<!-- astro cat -->
+<g transform="translate(250 730)"><g class="tumble">
+<path d="M40 30C120 80 60 170 150 190" fill="none" stroke="#b7b0e8" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 12"/>
+<g transform="translate(-30 52)"><g class="kick"><rect x="-12" y="0" width="24" height="44" rx="12" fill="#f4f1ff"/><rect x="-14" y="32" width="28" height="16" rx="8" fill="#ff7fb0"/></g></g>
+<g transform="translate(30 52)"><g class="kick kd"><rect x="-12" y="0" width="24" height="44" rx="12" fill="#f4f1ff"/><rect x="-14" y="32" width="28" height="16" rx="8" fill="#ff7fb0"/></g></g>
+<g transform="translate(-50 6)"><g class="kick"><rect x="-44" y="-11" width="48" height="22" rx="11" fill="#f4f1ff"/><circle cx="-44" r="13" fill="#ff7fb0"/></g></g>
+<g transform="translate(50 6)"><g class="wave"><rect x="-4" y="-11" width="48" height="22" rx="11" fill="#f4f1ff"/><circle cx="44" r="13" fill="#ff7fb0"/></g></g>
+<rect x="-54" y="-24" width="108" height="92" rx="34" fill="#f4f1ff"/><rect x="-22" y="6" width="44" height="30" rx="8" fill="#3fd0ff"/><circle cx="-10" cy="21" r="5" fill="#ffe27a"/><circle cx="10" cy="21" r="5" fill="#ff7fb0"/>
+<path d="M-54-104L-64-150L-22-128ZM54-104L64-150L22-128Z" fill="#f4f1ff"/><path d="M-50-112L-56-138L-32-126ZM50-112L56-138L32-126Z" fill="#ff7fb0"/>
+<circle cy="-66" r="66" fill="#f4f1ff"/><circle cy="-64" r="52" fill="#1c1440"/>
+<path d="M-36-92L-40-116L-18-102ZM36-92L40-116L18-102Z" fill="#ffab5c"/>
+<circle cy="-58" r="38" fill="#ffab5c"/><ellipse cy="-46" rx="20" ry="15" fill="#fff3e0"/>
+<g transform="translate(0 -66)"><g class="blink k2"><circle cx="-16" r="6.5" fill="#1c1440"/><circle cx="16" r="6.5" fill="#1c1440"/><circle cx="-14" cy="-2" r="2" fill="#fff"/><circle cx="18" cy="-2" r="2" fill="#fff"/></g></g>
+<path d="M-4-52h8l-4 5zM0-47q-6 8-12 3M0-47q6 8 12 3" fill="#ff7fb0" stroke="#7a3f1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-24-48h-18M-24-42l-16 5M24-48h18M24-42l16 5" stroke="#7a3f1f" stroke-width="2" stroke-linecap="round"/>
+<path d="M-30-104q16-14 36-10" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".5"/>
+</g></g>
+</svg>

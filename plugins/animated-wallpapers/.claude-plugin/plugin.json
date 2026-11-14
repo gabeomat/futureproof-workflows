@@ -1,0 +1,9 @@
+{
+  "name": "animated-wallpapers",
+  "description": "Puts an animated wallpaper behind your Claude chats, with six to pick from, and draws new ones from a description.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Gabriel Omat"
+  },
+  "types": "./types/index.d.ts"
+}

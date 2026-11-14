@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+<defs>
+<linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#eafcff"/><stop offset=".5" stop-color="#b9eef4"/><stop offset="1" stop-color="#7fd7e4"/>
+</linearGradient>
+<linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<path id="blade" d="M0 0C-26-60 24-120 0-180C-14-222 12-252 0-290" fill="none" stroke-width="18" stroke-linecap="round"/>
+<g id="bub"><circle r="10" fill="#fff" fill-opacity=".35" stroke="#fff" stroke-width="2"/><circle cx="-3" cy="-4" r="2.5" fill="#fff"/></g>
+</defs>
+<style>
+.beam{animation:beam 9s ease-in-out infinite alternate}.b2{animation-duration:12s;animation-delay:-4s}.b3{animation-duration:7s;animation-delay:-2s}
+@keyframes beam{from{transform:skewX(-6deg);opacity:.5}to{transform:skewX(7deg);opacity:1}}
+.sway{animation:sway 4s ease-in-out infinite alternate}.s2{animation-duration:5.2s;animation-delay:-1.5s}.s3{animation-duration:3.4s;animation-delay:-2.2s}
+@keyframes sway{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+.swimR{animation:swimR 36s linear infinite}.swimL{animation:swimL 44s linear infinite}
+.t2{animation-duration:52s;animation-delay:-20s}.t3{animation-duration:30s;animation-delay:-9s}.t4{animation-duration:64s;animation-delay:-40s}.t5{animation-duration:90s;animation-delay:-55s}
+@keyframes swimR{from{transform:translateX(-180px)}to{transform:translateX(1780px)}}
+@keyframes swimL{from{transform:translateX(1780px)}to{transform:translateX(-180px)}}
+.bob{animation:bob 3s ease-in-out infinite alternate}.o2{animation-duration:4.2s}.o3{animation-duration:2.4s}
+@keyframes bob{from{transform:translateY(-14px)}to{transform:translateY(14px)}}
+.wag{animation:wag .5s ease-in-out infinite alternate}
+@keyframes wag{from{transform:rotate(-16deg)}to{transform:rotate(16deg)}}
+.paddle{animation:paddle 1.6s ease-in-out infinite alternate}
+@keyframes paddle{from{transform:rotate(-22deg)}to{transform:rotate(18deg)}}
+.up{animation:up 11s linear infinite}.u2{animation-duration:14s;animation-delay:-5s}.u3{animation-duration:9s;animation-delay:-3s}.u4{animation-duration:17s;animation-delay:-11s}.u5{animation-duration:12s;animation-delay:-8s}
+@keyframes up{0%{transform:translate(0,0);opacity:0}8%{opacity:1}50%{transform:translate(16px,-480px)}92%{opacity:1}100%{transform:translate(-8px,-960px);opacity:0}}
+.scuttle{animation:scuttle 12s ease-in-out infinite alternate}
+@keyframes scuttle{from{transform:translateX(-90px)}to{transform:translateX(90px)}}
+.claw{animation:claw 1.2s ease-in-out infinite alternate}
+@keyframes claw{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+.blink{animation:blink 5s infinite}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+.wig{animation:wig 5s ease-in-out infinite alternate}
+@keyframes wig{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<rect width="1600" height="1000" fill="url(#sea)"/>
+<g fill="url(#beam)">
+<g transform="translate(260 -20)"><g class="beam"><path d="M-70 0H70L190 760H-150Z"/></g></g>
+<g transform="translate(760 -20)"><g class="beam b2"><path d="M-50 0H50L150 640H-110Z"/></g></g>
+<g transform="translate(1240 -20)"><g class="beam b3"><path d="M-80 0H80L220 800H-170Z"/></g></g>
+</g>
+<!-- turtle -->
+<g transform="translate(0 170)"><g class="swimL t5"><g class="bob o2">
+<g transform="translate(-34 16)"><g class="paddle"><path d="M0 0q-30 10-44 40q26-4 52-28z" fill="#6cc48b"/></g></g>
+<g transform="translate(30 18)"><g class="paddle"><path d="M0 0q16 18 40 22q-10-22-28-32z" fill="#6cc48b"/></g></g>
+<circle cx="-66" cy="-4" r="20" fill="#7fd39a"/><circle cx="-73" cy="-8" r="3.5" fill="#1f3b33"/><path d="M-80 2q6 5 12 0" fill="none" stroke="#1f3b33" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M-52 10Q-50-40 0-40T56 10Q0 28-52 10Z" fill="#3fa36c"/>
+<path d="M-24-28L-14 12M10-36V16M36-22L28 14M-44-6H50" stroke="#2f8656" stroke-width="4" stroke-linecap="round" fill="none"/>
+<path d="M54 6l22 4l-20 8z" fill="#6cc48b"/>
+</g></g></g>
+<!-- fish 1: orange clown -->
+<g transform="translate(0 330)"><g class="swimR"><g class="bob">
+<g transform="translate(-34 0)"><g class="wag"><path d="M0 0L-32-24L-24 0L-32 24Z" fill="#ff7a3d"/></g></g>
+<ellipse rx="44" ry="27" fill="#ff8c42"/><path d="M-10-26q10 26 0 52M14-24q9 24 0 48" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round"/>
+<path d="M-8-25q12-18 28-6" fill="#ff7a3d"/><circle cx="27" cy="-6" r="8" fill="#fff"/><circle cx="29" cy="-6" r="4" fill="#23303a"/><path d="M30 10q6 4 11-1" fill="none" stroke="#23303a" stroke-width="2.5" stroke-linecap="round"/>
+</g></g></g>
+<!-- fish 2: purple, swimming left -->
+<g transform="translate(0 520)"><g class="swimL t2"><g class="bob o2"><g transform="scale(-1 1)">
+<g transform="translate(-30 0)"><g class="wag"><path d="M0 0L-30-20L-22 0L-30 20Z" fill="#8f6fe8"/></g></g>
+<path d="M-34 0Q-10-34 30-18Q52-8 52 0Q52 8 30 18Q-10 34-34 0Z" fill="#a98bff"/><path d="M-6-22q14-16 30 2z" fill="#8f6fe8"/><path d="M-4 4q10 8 0 18" fill="none" stroke="#8f6fe8" stroke-width="4" stroke-linecap="round"/>
+<circle cx="30" cy="-4" r="7" fill="#fff"/><circle cx="32" cy="-4" r="3.5" fill="#23303a"/>
+</g></g></g></g>
+<!-- fish 3: little yellow school -->
+<g transform="translate(0 250)"><g class="swimR t3">
+<g class="bob o3"><g transform="translate(-22 0)"><g class="wag"><path d="M0 0L-18-12L-13 0L-18 12Z" fill="#f2b632"/></g></g><ellipse rx="26" ry="15" fill="#ffd34d"/><circle cx="14" cy="-3" r="4.5" fill="#fff"/><circle cx="15" cy="-3" r="2.2" fill="#23303a"/></g>
+<g transform="translate(-70 34)"><g class="bob"><g transform="translate(-22 0)"><g class="wag"><path d="M0 0L-18-12L-13 0L-18 12Z" fill="#f2b632"/></g></g><ellipse rx="26" ry="15" fill="#ffd34d"/><circle cx="14" cy="-3" r="4.5" fill="#fff"/><circle cx="15" cy="-3" r="2.2" fill="#23303a"/></g></g>
+<g transform="translate(-84 -30)"><g class="bob o2"><g transform="translate(-22 0)"><g class="wag"><path d="M0 0L-18-12L-13 0L-18 12Z" fill="#f2b632"/></g></g><ellipse rx="26" ry="15" fill="#ffd34d"/><circle cx="14" cy="-3" r="4.5" fill="#fff"/><circle cx="15" cy="-3" r="2.2" fill="#23303a"/></g></g>
+</g></g>
+<!-- fish 4: pink puffer -->
+<g transform="translate(0 660)"><g class="swimR t4"><g class="bob o2">
+<g transform="translate(-36 0)"><g class="wag"><path d="M0 0L-22-14L-16 0L-22 14Z" fill="#ff7fa8"/></g></g>
+<circle r="38" fill="#ff9fbe"/><path d="M-30 14a34 30 0 0 0 60 0z" fill="#ffe1ea"/>
+<path d="M0-38v-10M-22-31l-6-9M22-31l6-9M-36-12l-10-4M36-12l10-4" stroke="#ff7fa8" stroke-width="4" stroke-linecap="round"/>
+<circle cx="14" cy="-10" r="9" fill="#fff"/><circle cx="16" cy="-10" r="4.5" fill="#23303a"/><circle cx="-8" cy="-10" r="9" fill="#fff"/><circle cx="-6" cy="-10" r="4.5" fill="#23303a"/><ellipse cx="6" cy="8" rx="5" ry="4" fill="#e85f8e"/>
+</g></g></g>
+<!-- sand and reef -->
+<path d="M0 880Q300 820 620 872T1200 860T1600 840V1000H0Z" fill="#f8e7bd"/>
+<path d="M0 930Q400 880 800 926T1600 900V1000H0Z" fill="#f1d79f"/>
+<g transform="translate(90 890)" stroke="#39b27c"><g class="sway"><use href="#blade"/></g></g>
+<g transform="translate(150 900) scale(.75)" stroke="#5ccf8f"><g class="sway s2"><use href="#blade"/></g></g>
+<g transform="translate(40 900) scale(.6)" stroke="#2f9d72"><g class="sway s3"><use href="#blade"/></g></g>
+<g transform="translate(1500 880) scale(.9)" stroke="#39b27c"><g class="sway s2"><use href="#blade"/></g></g>
+<g transform="translate(1556 890) scale(.65)" stroke="#5ccf8f"><g class="sway"><use href="#blade"/></g></g>
+<g transform="translate(1110 884) scale(.5)" stroke="#5ccf8f"><g class="sway s3"><use href="#blade"/></g></g>
+<g fill="none" stroke="#ff7f9f" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"><path d="M300 900V800M300 850l-44-40v-36M300 836l46-36v-44M256 790l-26-22M346 780l28-20"/></g>
+<g fill="#ffb347"><circle cx="1330" cy="880" r="46"/><circle cx="1390" cy="892" r="34"/><circle cx="1284" cy="896" r="28"/></g>
+<path d="M1304 864q14-14 28 0t28 0M1296 890q14-14 28 0t28 0t28 0" fill="none" stroke="#f08f1f" stroke-width="5" stroke-linecap="round"/>
+<g fill="#b79cff"><rect x="420" y="836" width="30" height="74" rx="15"/><rect x="456" y="856" width="26" height="54" rx="13"/><rect x="390" y="864" width="24" height="46" rx="12"/></g>
+<g fill="#8f6fe8"><ellipse cx="435" cy="840" rx="9" ry="4"/><ellipse cx="469" cy="860" rx="8" ry="3.5"/><ellipse cx="402" cy="868" rx="7" ry="3"/></g>
+<g transform="translate(640 922)"><g class="wig"><path d="M0-30L8-9L30-9L12 4L19 26L0 13L-19 26L-12 4L-30-9L-8-9Z" fill="#ff8a5c" stroke="#ff8a5c" stroke-width="8" stroke-linejoin="round"/><circle cx="-5" cy="-2" r="2.5" fill="#23303a"/><circle cx="5" cy="-2" r="2.5" fill="#23303a"/><path d="M-4 5q4 4 8 0" fill="none" stroke="#23303a" stroke-width="2" stroke-linecap="round"/></g></g>
+<!-- crab -->
+<g transform="translate(1180 904)"><g class="scuttle">
+<path d="M-34 6l-22 12M-30 14l-18 20M34 6l22 12M30 14l18 20" stroke="#e8503a" stroke-width="6" stroke-linecap="round"/>
+<g transform="translate(-34 -8)"><g class="claw"><path d="M0 0q-18-10-22-30" fill="none" stroke="#e8503a" stroke-width="6" stroke-linecap="round"/><path d="M-22-30a14 14 0 1 1 6-10l-10 2z" fill="#ff6b52"/></g></g>
+<g transform="translate(34 -8)"><g class="claw"><path d="M0 0q18-10 22-30" fill="none" stroke="#e8503a" stroke-width="6" stroke-linecap="round"/><path d="M22-30a14 14 0 1 0-6-10l10 2z" fill="#ff6b52"/></g></g>
+<path d="M-12-22v-16M12-22v-16" stroke="#e8503a" stroke-width="5" stroke-linecap="round"/>
+<ellipse rx="42" ry="28" fill="#ff6b52"/>
+<g transform="translate(0 -40)"><g class="blink"><circle cx="-12" r="8" fill="#fff"/><circle cx="12" r="8" fill="#fff"/><circle cx="-11" r="4" fill="#23303a"/><circle cx="13" r="4" fill="#23303a"/></g></g>
+<path d="M-12 4q12 10 24 0" fill="none" stroke="#9c2f20" stroke-width="3.5" stroke-linecap="round"/><circle cx="-24" cy="2" r="6" fill="#ff9d8a"/><circle cx="24" cy="2" r="6" fill="#ff9d8a"/>
+</g></g>
+<!-- bubbles -->
+<g transform="translate(120 960)"><g class="up"><use href="#bub"/></g></g>
+<g transform="translate(210 980) scale(.6)"><g class="up u2"><use href="#bub"/></g></g>
+<g transform="translate(470 970) scale(1.3)"><g class="up u3"><use href="#bub"/></g></g>
+<g transform="translate(880 990) scale(.8)"><g class="up u4"><use href="#bub"/></g></g>
+<g transform="translate(1040 970) scale(.5)"><g class="up u5"><use href="#bub"/></g></g>
+<g transform="translate(1300 960) scale(1.1)"><g class="up u2"><use href="#bub"/></g></g>
+<g transform="translate(1440 980) scale(.7)"><g class="up"><use href="#bub"/></g></g>
+<g transform="translate(1520 990) scale(1.4)"><g class="up u4"><use href="#bub"/></g></g>
+<g transform="translate(340 990) scale(.9)"><g class="up u5"><use href="#bub"/></g></g>
+<g transform="translate(700 980) scale(.45)"><g class="up u3"><use href="#bub"/></g></g>
+</svg>
