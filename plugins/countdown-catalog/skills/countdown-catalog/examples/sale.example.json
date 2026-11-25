@@ -1,0 +1,273 @@
+{
+  "id": "juniper-week-2026",
+  "name": "Juniper Week 2026",
+  "brand_name": "Juniper Lane Studio",
+  "locale": "en-US",
+  "timezone": "America/New_York",
+  "currency": "USD",
+  "timer": {
+    "mode": "fixed"
+  },
+  "start": "2026-11-23T06:00:00-05:00",
+  "end": "2026-11-28T00:00:00-05:00",
+  "interaction": {
+    "preset": "turn-circle"
+  },
+  "seo": {
+    "title": "Juniper Week 2026: five photography deals, one a day",
+    "description": "Juniper Lane Studio's yearly sale runs November 23 to 27, with a new photography course or kit opening every morning at 6am ET."
+  },
+  "bar": {
+    "before": {
+      "long": "Juniper Week opens in",
+      "short": "Opens in"
+    },
+    "live": {
+      "long": "Juniper Week is on. Today's deal closes in",
+      "short": "Today's deal closes in"
+    },
+    "after": {
+      "long": "Juniper Week has closed. Thank you for shopping.",
+      "short": "The sale has closed"
+    }
+  },
+  "cta": {
+    "single": "Shop today's deal",
+    "many": "See the deals"
+  },
+  "before": {
+    "link": "https://example.com/juniper-early-list",
+    "cta": "Join the early list",
+    "card_cta": "Remind me"
+  },
+  "after": {
+    "link": "https://example.com/juniper-courses",
+    "cta": "See all courses"
+  },
+  "hero": {
+    "eyebrow": "5 days of deals · November 23 to 27",
+    "title": "Juniper Week",
+    "subtitle": "The yearly sale, one deal a day",
+    "hint": "Turn a card over for the details, and tick the ones you want to come back to."
+  },
+  "labels": {
+    "picks_title": "Your circled deals",
+    "mark": "Circle {name}"
+  },
+  "offers": [
+    {
+      "id": "light-school",
+      "name": "Light School",
+      "tagline": "First time ever, 50% off",
+      "kicker": "No. 1 · Monday, Nov 23",
+      "opens": "2026-11-23T06:00:00-05:00",
+      "closes": "2026-11-24T06:00:00-05:00",
+      "description": "Six short lessons on reading and shaping natural light, so every shoot starts with a plan instead of a guess.",
+      "best_for": "You shoot people outdoors and your light changes faster than you can adjust.",
+      "inside": [
+        "6 video lessons",
+        "Light-reading field cards",
+        "Two live critique replays"
+      ],
+      "price": "$98",
+      "was": "$197",
+      "link": "https://example.com/light-school",
+      "cover_title": "Light School",
+      "cover_line": "read the light first"
+    },
+    {
+      "id": "portfolio-edit",
+      "name": "The Portfolio Edit",
+      "tagline": "A founding price for the new membership",
+      "kicker": "No. 2 · Tuesday, Nov 24",
+      "opens": "2026-11-24T06:00:00-05:00",
+      "closes": "2026-11-25T06:00:00-05:00",
+      "description": "A monthly portfolio review circle. Bring twenty images, leave with the twelve that get you booked.",
+      "best_for": "Your portfolio has grown for years and no longer shows the work you want more of.",
+      "inside": [
+        "Monthly live review",
+        "Private feedback board",
+        "Curation worksheet"
+      ],
+      "price": "$29 a month",
+      "was": "$49",
+      "link": "https://example.com/portfolio-edit",
+      "cover_title": "The Portfolio Edit",
+      "cover_line": "membership"
+    },
+    {
+      "id": "golden-hour",
+      "name": "Golden Hour Masterclass",
+      "tagline": "Half price for 24 hours only",
+      "kicker": "No. 3 · Wednesday, Nov 25",
+      "opens": "2026-11-25T06:00:00-05:00",
+      "closes": "2026-11-26T06:00:00-05:00",
+      "description": "The full golden-hour workflow, from scouting the location the day before to the last frame before the sun drops.",
+      "best_for": "You book sunset sessions and want every one to look like your best one.",
+      "inside": [
+        "3-hour masterclass",
+        "Scouting checklist",
+        "Colour grading presets",
+        "Posing prompt cards"
+      ],
+      "price": "$74",
+      "was": "$149",
+      "link": "https://example.com/golden-hour",
+      "cover_title": "Golden Hour",
+      "cover_line": "masterclass"
+    },
+    {
+      "id": "client-kit",
+      "name": "The Client Magnet Kit",
+      "tagline": "First time ever, 60% off",
+      "kicker": "No. 4 · Thursday, Nov 26",
+      "opens": "2026-11-26T06:00:00-05:00",
+      "closes": "2026-11-27T06:00:00-05:00",
+      "description": "The emails, price guide and welcome packet I send every new client, ready to edit and send this week.",
+      "best_for": "People like your work but go quiet after they see your prices.",
+      "inside": [
+        "Inquiry email templates",
+        "Editable price guide",
+        "Client welcome packet"
+      ],
+      "price": "$47",
+      "was": "$117",
+      "link": "https://example.com/client-kit",
+      "cover_title": "Client Magnet Kit",
+      "cover_line": "templates"
+    },
+    {
+      "id": "studio-pass",
+      "name": "The Studio Pass",
+      "tagline": "Last chance for lifetime access",
+      "kicker": "No. 5 · Friday, Nov 27",
+      "opens": "2026-11-27T06:00:00-05:00",
+      "closes": "2026-11-28T00:00:00-05:00",
+      "flagship": true,
+      "description": "Every course in the studio, every future course, and the monthly live room, for one payment.",
+      "best_for": "You want the whole studio and plan to keep learning with it for years.",
+      "inside": [
+        "All 9 current courses",
+        "Every future course",
+        "Monthly live room",
+        "Light School, Golden Hour and the Client Kit included"
+      ],
+      "price": "$497",
+      "was": "$1,200",
+      "link": "https://example.com/studio-pass",
+      "cover_title": "The Studio Pass",
+      "cover_line": "lifetime access"
+    },
+    {
+      "id": "presets",
+      "group": "rack",
+      "name": "Film Look Presets",
+      "tagline": "My best seller, all week",
+      "opens": "2026-11-23T06:00:00-05:00",
+      "closes": "2026-11-28T00:00:00-05:00",
+      "description": "Twelve presets built from scanned film stock, tuned for skin tones.",
+      "price": "$19",
+      "was": "$39",
+      "link": "https://example.com/presets",
+      "cover_title": "Film Look",
+      "cover_line": "12 presets"
+    },
+    {
+      "id": "pricing-calc",
+      "group": "rack",
+      "name": "Session Pricing Calculator",
+      "tagline": "Rarely discounted, $15 this week",
+      "opens": "2026-11-23T06:00:00-05:00",
+      "closes": "2026-11-28T00:00:00-05:00",
+      "description": "A spreadsheet that works out what a session must cost to pay you properly.",
+      "price": "$15",
+      "was": "$29",
+      "link": "https://example.com/pricing",
+      "cover_title": "Pricing Calculator",
+      "cover_line": "spreadsheet"
+    },
+    {
+      "id": "album-templates",
+      "group": "rack",
+      "name": "Album Templates",
+      "tagline": "40% off, this week only",
+      "opens": "2026-11-23T06:00:00-05:00",
+      "closes": "2026-11-28T00:00:00-05:00",
+      "description": "Twenty spread layouts for wedding and family albums.",
+      "price": "$36",
+      "was": "$60",
+      "link": "https://example.com/albums",
+      "cover_title": "Album Templates",
+      "cover_line": "20 spreads"
+    }
+  ],
+  "rack": {
+    "eyebrow": "All week long",
+    "title": "On the shelf",
+    "text": "Three extras that stay open all week, alongside the daily deals."
+  },
+  "how": {
+    "eyebrow": "How it works",
+    "title": "One deal a day",
+    "title_turn": "for five days.",
+    "text": "A new deal opens every morning at 6am ET and closes 24 hours later. The shelf extras stay open all week."
+  },
+  "note": {
+    "eyebrow": "A note from Juniper",
+    "title": "The sale I run once a year,",
+    "title_turn": "and the best one yet.",
+    "body": [
+      "Every November I put the courses I actually teach from on sale for one week. This year there's a new membership, a new kit, and the last chance to get the Studio Pass for life.",
+      "If there's a course you've been circling all year, this is the week. Each deal gets its own day, and once it closes it's gone until next year."
+    ],
+    "sign": "Juniper",
+    "badge": "A note from Juniper",
+    "monogram": "J"
+  },
+  "faq": {
+    "eyebrow": "Questions",
+    "title": "Everything you need to know about Juniper Week",
+    "items": [
+      {
+        "q": "When does each deal open and close?",
+        "a": "Each daily deal opens at 6am ET and closes 24 hours later. The shelf extras are open the whole week."
+      },
+      {
+        "q": "What time is that where I live?",
+        "a": "The countdown at the top of the page shows the exact time left in your own time zone."
+      },
+      {
+        "q": "Can I buy more than one deal?",
+        "a": "Yes. Each deal is a separate checkout, so buy as many as you like while they're open."
+      },
+      {
+        "q": "What's the refund policy?",
+        "a": "Every course has a 14-day refund window. Email the studio and it's handled the same day."
+      }
+    ]
+  },
+  "closing": {
+    "eyebrow": "See you Monday",
+    "title": "The best week of the year",
+    "title_turn": "to learn from me.",
+    "text": "Circle the deals that fit where your work is heading next year, and come back each morning when they open.",
+    "facts": [
+      "Monday, November 23 to Friday, November 27",
+      "A new deal every morning at 6am ET",
+      "hello@example.com"
+    ]
+  },
+  "footer": {
+    "line": "Juniper Week 2026",
+    "links": [
+      {
+        "label": "Privacy",
+        "href": "https://example.com/privacy"
+      },
+      {
+        "label": "Terms",
+        "href": "https://example.com/terms"
+      }
+    ]
+  }
+}
