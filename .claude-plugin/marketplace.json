@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Ready-to-install Claude Code workflows from Gabriel Omat. Each workflow installs on its own.",
-    "version": "0.3.0"
+    "version": "0.4.0"
   },
   "plugins": [
     {
@@ -17,6 +17,11 @@
       "name": "animated-wallpapers",
       "source": "./plugins/animated-wallpapers",
       "description": "Puts an animated wallpaper behind your Claude chats, with six to pick from, and draws new ones from a description."
+    },
+    {
+      "name": "countdown-catalog",
+      "source": "./plugins/countdown-catalog",
+      "description": "Builds a limited-time sale page for 2 or more offers, with a live countdown bar and offer cards visitors open and save, in your own brand."
     }
   ]
 }

@@ -1,0 +1,38 @@
+{
+  "brand_name": "Juniper Lane Studio",
+  "mode": "dark",
+  "colors": {
+    "background": "#f3ede2",
+    "ink": "#17150f",
+    "accent": "#e9b44c",
+    "urgency": "#24412f",
+    "paper": "#f3ede2"
+  },
+  "fonts": {
+    "display": {
+      "family": "Bricolage Grotesque",
+      "google": "Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800",
+      "fallback": "sans",
+      "weight": 800
+    },
+    "accent": {
+      "family": "Fraunces",
+      "google": "Fraunces:ital,opsz,wght@1,9..144,400",
+      "fallback": "serif"
+    },
+    "body": {
+      "family": "Inter",
+      "google": "Inter:wght@400;500;600;700",
+      "fallback": "sans"
+    },
+    "label": {
+      "family": "Inter",
+      "fallback": "sans"
+    }
+  },
+  "style": {
+    "display_tracking": "-0.04em",
+    "radius_card": "8px",
+    "accent_style": "italic"
+  }
+}

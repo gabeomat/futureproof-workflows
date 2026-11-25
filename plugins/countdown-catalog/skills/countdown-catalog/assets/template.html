@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- HEAD:START -->
+<title>Countdown Catalog</title>
+<!-- HEAD:END -->
+<!-- FONTS:START -->
+<!-- FONTS:END -->
+<style>
+/* ==========================================================================
+   COUNTDOWN CATALOG ENGINE
+   Brand lives ONLY in the TOKENS block. Everything below it reads var(--…).
+   scripts/check_tokens.py fails the build if a colour or font name appears
+   anywhere outside TOKENS / FONTS.
+   ========================================================================== */
+
+/* TOKENS:START */
+.cc{
+  --bg:#0b0a0a; --surface:#161414; --surface-2:#1f1c1c; --line:#2e2a2a;
+  --ink:#f3ece2; --ink-muted:#b5ada3;
+  --accent:#f6dd8e; --accent-edge:#f6dd8e; --on-accent:#1a1414;
+  --urgency:#6e1424; --on-urgency:#f8efe4;
+  --paper:#efe7da; --on-paper:#211b18; --paper-muted:#5b524b;
+  --accent-ink:#f6dd8e; --mark:#f6dd8e; --on-mark:#1a1414; --shadow:#000000;
+  --font-display:system-ui, sans-serif; --font-accent:Georgia, serif;
+  --font-body:system-ui, sans-serif; --font-label:system-ui, sans-serif;
+  --display-weight:700; --display-tracking:-0.035em; --display-case:none; --accent-style:normal;
+  --label-tracking:0.18em;
+  --radius-card:6px; --radius-pill:999px;
+  --img-brightness:0.55; --img-contrast:1.06; --img-saturate:0.8; --grain:0.07;
+}
+body:has(> .cc){background:#0b0a0a}
+/* TOKENS:END */
+
+/* ---------- pattern constants (not brand) ---------- */
+.cc{
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --ease-flip:cubic-bezier(.3,.7,.2,1);
+  --ease-ink:cubic-bezier(.55,.1,.3,1);
+  --ease-thump:cubic-bezier(.2,1.5,.4,1);
+  --t-fast:.22s; --t-mid:.55s; --t-slow:.85s;
+  --wrap:min(1180px, 100% - 2.5rem);
+  --card-w:clamp(260px, 30vw, 340px);
+  --card-h:31.5rem;
+  --rack-w:clamp(210px, 18vw, 232px);
+  --rack-h:24rem;
+  --accent-glow:color-mix(in srgb, var(--accent) 55%, transparent);
+  --accent-halo:color-mix(in srgb, var(--accent) 9%, transparent);
+  --mark-soft:color-mix(in srgb, var(--mark) 58%, transparent);
+  --shade:color-mix(in srgb, var(--shadow) 38%, transparent);
+  --glass:color-mix(in srgb, var(--surface) 62%, transparent);
+  --grain-img:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- base ---------- */
+html,body{margin:0}
+.cc{position:relative;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip;min-height:100vh}
+.cc *,.cc *::before,.cc *::after{box-sizing:border-box}
+.cc img{max-width:100%;display:block}
+.cc :where(a){color:inherit}
+.cc :where(h1,h2,h3,p){margin:0} /* :where keeps the reset weaker than class rules, so .cc-h1, .cc-sub, .cc-hint etc. keep their margins */
+.cc :where(button){font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+.cc [hidden]{display:none !important}
+.cc :focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px;border-radius:4px}
+.cc-wrap{width:var(--wrap);margin-inline:auto}
+.cc-label{font-family:var(--font-label);font-size:.72rem;letter-spacing:var(--label-tracking);text-transform:uppercase;font-weight:600}
+.cc-eyebrow{display:flex;align-items:center;gap:1rem;color:var(--ink-muted)}
+.cc-eyebrow::after{content:"";width:2.5rem;height:1px;background:currentColor;opacity:.6}
+.cc-h2{font-family:var(--font-display);font-weight:var(--display-weight);letter-spacing:var(--display-tracking);
+  text-transform:var(--display-case);font-size:clamp(2.2rem,5vw,3.8rem);line-height:1.02}
+.cc-h2 em,.cc-h1 em{font-family:var(--font-accent);font-style:var(--accent-style);font-weight:400;letter-spacing:-.01em;color:var(--ink-muted)}
+.cc-sec{padding-block:clamp(4.5rem,10vw,8rem)}
+.cc-grain{position:relative;isolation:isolate}
+.cc-grain::after{content:"";position:absolute;inset:0;background-image:var(--grain-img);opacity:var(--grain);
+  pointer-events:none;mix-blend-mode:overlay;z-index:0}
+.cc-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- buttons ---------- */
+.cc-btn{display:inline-flex;align-items:center;gap:.65rem;min-height:48px;padding:.95rem 1.8rem;border-radius:var(--radius-pill);
+  background:var(--accent);color:var(--on-accent);border:1.5px solid var(--accent-edge);text-decoration:none;font-family:var(--font-label);font-weight:700;
+  font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;
+  box-shadow:0 0 0 0 var(--accent-halo),0 12px 38px -8px var(--accent-glow);transition:gap var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+.cc-btn:hover{gap:1rem}
+.cc-btn:active{transform:scale(.98)}
+.cc-btn .cc-arrow{transition:translate var(--t-fast) var(--ease)}
+.cc-btn--glow{animation:cc-glow 2.6s ease-in-out infinite}
+@keyframes cc-glow{50%{box-shadow:0 0 0 12px var(--accent-halo),0 0 54px var(--accent-glow)}}
+
+/* ---------- countdown bar ---------- */
+.cc-bar{position:sticky;top:0;z-index:60;background:var(--urgency);color:var(--on-urgency)}
+.cc-bar-in{width:var(--wrap);margin-inline:auto;min-height:64px;display:flex;align-items:center;justify-content:center;gap:clamp(.8rem,2.4vw,2.2rem);padding-block:.55rem}
+.cc-bar-msg{font-family:var(--font-label);font-weight:700;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase}
+.cc-bar-msg .cc-short,.cc-sm,.cc-btn-s{display:none}
+.cc-clock{display:flex;gap:clamp(.6rem,1.6vw,1.3rem);align-items:baseline;font-variant-numeric:tabular-nums}
+.cc-clock > span{display:flex;align-items:baseline;gap:.3rem}
+.cc-clock b{font-family:var(--font-display);font-weight:var(--display-weight);font-size:clamp(1.25rem,2.4vw,1.7rem);letter-spacing:-.02em;line-height:1}
+.cc-clock small{font-family:var(--font-label);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.cc-bar .cc-btn{min-height:42px;padding:.65rem 1.2rem;font-size:.72rem;letter-spacing:.08em;text-transform:none;animation:cc-glow 2.2s ease-in-out infinite}
+.cc-bar[data-phase="after"] .cc-clock{display:none}
+.cc-df{display:flex;align-items:center}
+
+/* ---------- hero ---------- */
+.cc-hero{position:relative;padding:clamp(4rem,9vw,7.5rem) 0 clamp(2.5rem,5vw,4rem);text-align:center;overflow:hidden}
+.cc-hero-bg{position:absolute;inset:0;z-index:-1}
+.cc-hero-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(var(--img-brightness)) contrast(var(--img-contrast)) saturate(var(--img-saturate));
+  -webkit-mask-image:linear-gradient(black 35%,transparent 100%);mask-image:linear-gradient(black 35%,transparent 100%)}
+.cc-hero-bg--proc{background:
+  radial-gradient(60% 55% at 18% 10%,color-mix(in srgb,var(--urgency) 40%,transparent),transparent 70%),
+  radial-gradient(45% 50% at 85% 25%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%),
+  radial-gradient(70% 60% at 50% 110%,color-mix(in srgb,var(--surface-2) 90%,transparent),transparent 70%)}
+.cc-hero .cc-label{color:var(--ink-muted)}
+.cc-h1{font-family:var(--font-display);font-weight:var(--display-weight);letter-spacing:var(--display-tracking);text-transform:var(--display-case);
+  font-size:clamp(3rem,10vw,8rem);line-height:.92;margin-top:1.4rem}
+.cc-sub{font-family:var(--font-accent);font-size:clamp(1.5rem,3.4vw,2.6rem);font-style:var(--accent-style);line-height:1.1;color:var(--ink-muted);margin-top:1rem}
+.cc-hero .cc-btn{margin-top:2.2rem}
+.cc-hint{margin-top:1.6rem;color:var(--ink-muted);font-size:.95rem}
+
+/* ---------- catalog grid ---------- */
+.cc-catalog{padding-bottom:clamp(3rem,7vw,5rem);scroll-margin-top:80px}
+.cc-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(1rem,2vw,1.6rem)}
+.cc-grid[data-count="4"]{max-width:calc(var(--card-w) * 2 + 3.2rem);margin-inline:auto}
+
+/* ---------- card shell ---------- */
+.cc-card{position:relative;width:var(--card-w);height:var(--card-h);perspective:1800px;flex:none}
+.cc-card-in{position:relative;width:100%;height:100%;transition:transform var(--t-slow) var(--ease-flip)}
+.cc-face{position:absolute;inset:0;border-radius:var(--radius-card);overflow:hidden}
+.cc-front{isolation:isolate;background:linear-gradient(180deg,var(--surface),var(--bg));border:1px solid var(--line);display:flex;flex-direction:column;padding:1.3rem 1.3rem 1.2rem;z-index:2}
+.cc-back{background:var(--paper);color:var(--on-paper);display:flex;flex-direction:column;z-index:1}
+.cc-card[data-flagship] .cc-front{border:2px solid var(--accent-edge);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 14%,transparent),0 24px 60px -24px var(--accent-glow)}
+.cc-flag{position:absolute;top:-.8rem;left:50%;translate:-50% 0;z-index:5;background:var(--urgency);color:var(--on-urgency);
+  padding:.3rem .8rem;border-radius:var(--radius-pill);font-family:var(--font-label);font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+
+.cc-top{display:flex;align-items:center;gap:.9rem}
+.cc-num{font-family:var(--font-display);font-weight:var(--display-weight);font-size:2.6rem;line-height:1;letter-spacing:-.03em;color:var(--ink-muted)}
+.cc-card[data-flagship] .cc-num{color:var(--accent-ink)}
+.cc-pill{font-family:var(--font-label);font-size:.64rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:.38rem .75rem;border-radius:var(--radius-pill);border:1px solid var(--line);color:var(--ink-muted);white-space:nowrap}
+.cc-card[data-status="live"] .cc-pill{background:var(--accent);color:var(--on-accent);border-color:var(--accent-edge)}
+.cc-card[data-status="closed"] .cc-pill{text-decoration:line-through}
+
+/* the save box */
+.cc-pick{margin-left:auto;position:relative;width:28px;height:28px;flex:none;cursor:pointer}
+.cc-pick input{position:absolute;inset:-8px;opacity:0;cursor:pointer;margin:0;width:44px;height:44px}
+.cc-pick svg{width:28px;height:28px;overflow:visible}
+.cc-pick rect{fill:color-mix(in srgb,var(--ink) 6%,transparent);stroke:var(--ink-muted);stroke-width:1.5;transition:stroke var(--t-fast)}
+.cc-pick path{fill:none;stroke:var(--mark);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:30;stroke-dashoffset:30;transition:stroke-dashoffset .45s var(--ease-ink)}
+.cc-pick input:checked + svg path{stroke-dashoffset:0}
+.cc-pick input:checked + svg rect{stroke:var(--mark)}
+.cc-pick input:focus-visible + svg rect{stroke:var(--accent);stroke-width:2.5}
+
+/* media */
+.cc-media{flex:1;display:grid;place-items:center;padding:1rem 0 .4rem;min-height:0}
+.cc-shot{position:relative;height:100%;max-height:16.5rem;aspect-ratio:3/4;border-radius:calc(var(--radius-card) + 6px);padding:8px;
+  background:color-mix(in srgb,var(--ink) 7%,var(--bg));box-shadow:0 24px 40px -18px var(--shade);
+  translate:calc(var(--dx,0) * 7px) calc(var(--dy,0) * 7px);transition:translate .7s var(--ease),scale .7s var(--ease)}
+.cc-shot img,.cc-cover{width:100%;height:100%;object-fit:cover;border-radius:var(--radius-card);transition:filter var(--t-mid)}
+.cc-cover{display:flex;flex-direction:column;justify-content:flex-end;padding:1rem;text-align:left;
+  background:radial-gradient(90% 70% at 20% 0%,color-mix(in srgb,var(--accent) 30%,transparent),transparent 70%),
+    linear-gradient(160deg,var(--urgency),color-mix(in srgb,var(--urgency) 72%,var(--shadow)));color:var(--on-urgency);position:relative;overflow:hidden}
+.cc-cover[data-v="1"]{background:radial-gradient(80% 60% at 90% 15%,color-mix(in srgb,var(--accent) 34%,transparent),transparent 70%),linear-gradient(200deg,color-mix(in srgb,var(--urgency) 80%,var(--accent)),color-mix(in srgb,var(--urgency) 65%,var(--shadow)))}
+.cc-cover[data-v="2"]{background:radial-gradient(120% 70% at 50% 110%,color-mix(in srgb,var(--accent) 40%,transparent),transparent 65%),linear-gradient(180deg,color-mix(in srgb,var(--urgency) 60%,var(--shadow)),var(--urgency))}
+.cc-cover::after{content:"";position:absolute;inset:0;background-image:var(--grain-img);opacity:calc(var(--grain) * 2);mix-blend-mode:overlay}
+.cc-cover b{font-family:var(--font-display);font-weight:var(--display-weight);text-transform:var(--display-case);font-size:1.55rem;line-height:.98;letter-spacing:-.02em}
+.cc-cover i{font-family:var(--font-accent);font-style:var(--accent-style);font-size:.95rem;opacity:.85;margin-top:.4rem}
+.cc-card[data-status="closed"] .cc-shot img,.cc-card[data-status="closed"] .cc-cover{filter:grayscale(1) brightness(.8)}
+
+/* tagline + actions */
+.cc-tag{position:relative;text-align:center;font-weight:600;font-size:1rem;line-height:1.35;margin:.9rem auto 0;max-width:92%}
+.cc-tag-t{position:relative;z-index:1;padding:0 .15em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.cc-acts{display:flex;justify-content:center;align-items:center;gap:1.3rem;margin-top:.75rem;min-height:44px}
+.cc-turn,.cc-buy,.cc-turnback{font-family:var(--font-label);font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-muted);display:inline-flex;align-items:center;gap:.45rem;min-height:44px;text-decoration:none;transition:color var(--t-fast),gap var(--t-fast) var(--ease)}
+.cc-turn:hover,.cc-buy:hover{color:var(--ink);gap:.7rem}
+.cc-card[data-status="live"] .cc-buy{color:var(--accent-ink)}
+.cc-turn svg,.cc-turnback svg{width:13px;height:13px}
+
+/* back face */
+.cc-back-scroll{position:relative;flex:1;min-height:0;display:flex;flex-direction:column}
+.cc-back-body{flex:1;min-height:0;overflow:auto;padding:1.4rem 1.4rem 2.4rem;scrollbar-width:thin}
+.cc-kick{color:var(--paper-muted);font-size:.66rem}
+.cc-back h3{font-family:var(--font-display);font-weight:var(--display-weight);font-size:1.6rem;line-height:1.05;letter-spacing:-.02em;margin:.5rem 0 .7rem;text-transform:var(--display-case)}
+.cc-back p{font-size:.9rem;line-height:1.55;color:var(--paper-muted)}
+.cc-best{margin:1rem 0;padding:.8rem .9rem;border-radius:var(--radius-card);background:color-mix(in srgb,var(--on-paper) 8%,transparent)}
+.cc-best .cc-label{font-size:.6rem;color:var(--paper-muted)}
+.cc-best p{color:var(--on-paper);margin-top:.25rem}
+.cc-inside{margin:.2rem 0 0;padding:0;list-style:none}
+.cc-inside li{font-size:.86rem;padding:.4rem 0 .4rem 1.2rem;position:relative;border-top:1px solid color-mix(in srgb,var(--on-paper) 12%,transparent)}
+.cc-inside li::before{content:"✦";position:absolute;left:0;font-size:.7rem;top:.55rem;color:var(--urgency)}
+.cc-price{margin-top:1rem;font-family:var(--font-display);font-weight:var(--display-weight);font-size:1.5rem}
+.cc-price s{font-family:var(--font-body);font-weight:400;font-size:1rem;color:var(--paper-muted);margin-left:.5rem}
+.cc-more{position:absolute;left:0;right:0;bottom:0;padding:2.2rem 0 .5rem;text-align:center;color:var(--paper-muted);font-size:.6rem;pointer-events:none;
+  background:linear-gradient(transparent,var(--paper) 62%);transition:opacity var(--t-fast)}
+.cc-more i{display:inline-block;font-style:normal;animation:cc-bob 1.8s ease-in-out infinite}
+.cc-card.cc-end .cc-more{opacity:0}
+@keyframes cc-bob{50%{translate:0 3px}}
+.cc-back-foot{display:flex;align-items:center;gap:1rem;padding:.8rem 1.1rem .9rem 1.4rem;border-top:1px solid color-mix(in srgb,var(--on-paper) 12%,transparent)}
+.cc-go{flex:1;display:inline-flex;align-items:center;justify-content:center;text-align:center;gap:.5rem;min-height:44px;padding:.5rem .9rem;border-radius:var(--radius-pill);
+  background:var(--on-paper);color:var(--paper);font-family:var(--font-label);font-weight:700;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:gap var(--t-fast) var(--ease)}
+.cc-go:hover{gap:.8rem}
+.cc-go[aria-disabled="true"]{background:transparent;color:var(--paper-muted);border:1px solid color-mix(in srgb,var(--on-paper) 25%,transparent);pointer-events:none}
+.cc-turnback{color:var(--paper-muted);font-size:.62rem;flex:none}
+.cc-rail .cc-go{font-size:.64rem;letter-spacing:.1em}
+.cc-rail .cc-back-foot{flex-direction:column;align-items:stretch;gap:0;padding-inline:1rem}
+
+/* ==================== REVEAL STYLES ==================== */
+/* flip — the card turns over in 3D */
+.cc-card[data-reveal="flip"] .cc-card-in{transform-style:preserve-3d}
+.cc-card[data-reveal="flip"] .cc-face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.cc-card[data-reveal="flip"] .cc-back{transform:rotateY(180deg)}
+.cc-card[data-reveal="flip"].cc-open .cc-card-in{transform:rotateY(180deg)}
+/* slide — a details sheet slides up over the front */
+.cc-card[data-reveal="slide"] .cc-card-in{overflow:hidden;border-radius:var(--radius-card)}
+.cc-card[data-reveal="slide"] .cc-back{z-index:3;transform:translateY(101%);transition:transform .7s var(--ease);box-shadow:0 -18px 40px -20px var(--shade)}
+.cc-card[data-reveal="slide"].cc-open .cc-back{transform:none}
+.cc-card[data-reveal="slide"] .cc-front{transition:filter .7s var(--ease)}
+.cc-card[data-reveal="slide"].cc-open .cc-front{filter:brightness(.6)}
+/* peel — the front peels away like a ticket stub */
+.cc-card[data-reveal="peel"] .cc-front{transform-origin:12% 100%;transition:transform .75s var(--ease),opacity .5s var(--ease) .15s}
+.cc-card[data-reveal="peel"].cc-open .cc-front{transform:translate(-4%,-10%) rotate(-9deg);opacity:0;pointer-events:none}
+/* lift — the front lifts off like a box lid */
+.cc-card[data-reveal="lift"] .cc-card-in{overflow:hidden;border-radius:var(--radius-card)}
+.cc-card[data-reveal="lift"] .cc-front{transition:transform .8s var(--ease)}
+.cc-card[data-reveal="lift"].cc-open .cc-front{transform:translateY(-104%)}
+
+/* ==================== MARK STYLES ==================== */
+.cc-ring,.cc-stamp,.cc-tagmark{display:none}
+/* circle — a hand-drawn ink loop around the tagline */
+.cc-card[data-mark="circle"] .cc-ring{display:block;position:absolute;left:-8%;top:-30%;width:116%;height:160%;overflow:visible;pointer-events:none}
+.cc-ring path{fill:none;stroke:var(--mark);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:var(--len,600);stroke-dashoffset:var(--len,600);
+  transition:stroke-dashoffset .75s var(--ease-ink),opacity .15s;opacity:0}
+.cc-card.cc-marked .cc-ring path{stroke-dashoffset:0;opacity:1}
+/* stamp — a rubber stamp thumps onto the card */
+.cc-card[data-mark="stamp"] .cc-stamp{display:block;position:absolute;right:1.1rem;top:42%;z-index:4;pointer-events:none;
+  font-family:var(--font-label);font-weight:800;font-size:.95rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mark);
+  border:3px double var(--mark);border-radius:6px;padding:.35rem .7rem;opacity:0;transform:rotate(-12deg) scale(1.9)}
+.cc-card.cc-marked .cc-stamp{animation:cc-stamp .5s var(--ease-thump) forwards}
+@keyframes cc-stamp{0%{opacity:0;transform:rotate(-12deg) scale(1.9)}60%{opacity:1}100%{opacity:.92;transform:rotate(-12deg) scale(1)}}
+/* highlight — a marker swipes behind the tagline */
+.cc-card[data-mark="highlight"] .cc-tag-t{background:linear-gradient(100deg,transparent 0 1%,var(--mark-soft) 3% 97%,transparent 99%) no-repeat 0 62%/0% 58%;
+  transition:background-size .65s var(--ease-ink)}
+.cc-card[data-mark="highlight"].cc-marked .cc-tag-t{background-size:100% 58%}
+/* tag — a gift tag swings in from the corner */
+.cc-card[data-mark="tag"] .cc-tagmark{display:flex;position:absolute;top:-4px;right:3.4rem;z-index:4;pointer-events:none;flex-direction:column;align-items:center;
+  transform-origin:50% 0;opacity:0;transform:rotate(-75deg)}
+.cc-tagmark::before{content:"";width:1px;height:22px;background:var(--mark)}
+.cc-tagmark span{background:var(--mark);color:var(--on-mark);font-family:var(--font-label);font-weight:800;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:.5rem .55rem .45rem;clip-path:polygon(50% 0,100% 18%,100% 100%,0 100%,0 18%)}
+.cc-card.cc-marked .cc-tagmark{animation:cc-swing 1.15s var(--ease) forwards}
+@keyframes cc-swing{0%{opacity:1;transform:rotate(-75deg)}45%{transform:rotate(16deg)}68%{transform:rotate(-8deg)}86%{transform:rotate(3deg)}100%{opacity:1;transform:rotate(0)}}
+
+/* ==================== SKINS ==================== */
+.cc-card[data-skin="ticket"] .cc-front,.cc-card[data-skin="ticket"] .cc-back{
+  -webkit-mask:radial-gradient(circle 13px at 0 75%,transparent 98%,black),radial-gradient(circle 13px at 100% 75%,transparent 98%,black);
+  -webkit-mask-composite:source-in;
+  mask:radial-gradient(circle 13px at 0 75%,transparent 98%,black),radial-gradient(circle 13px at 100% 75%,transparent 98%,black);
+  mask-composite:intersect}
+.cc-card[data-skin="ticket"] .cc-front::after{content:"";position:absolute;left:18px;right:18px;top:75%;border-top:2px dashed var(--line)}
+.cc-card[data-skin="ticket"] .cc-media{flex:none;height:calc(75% - 5.3rem);padding-bottom:.9rem}
+.cc-card[data-skin="ticket"] .cc-tag{margin-top:1.4rem}
+.cc-card[data-skin="gift"] .cc-front::before{content:"";position:absolute;top:0;bottom:0;right:16%;width:12px;z-index:-1;
+  background:linear-gradient(90deg,var(--mark-soft),color-mix(in srgb,var(--mark) 75%,transparent),var(--mark-soft))}
+
+/* hover: a small physical rattle (separate `rotate` property, so it never fights the flip) */
+@media (hover:hover){
+  .cc-card:not(.cc-open):hover .cc-card-in{animation:cc-rattle 1.4s cubic-bezier(.37,0,.63,1)}
+  .cc-card:hover .cc-shot{scale:1.03}
+}
+@keyframes cc-rattle{20%{rotate:1deg}45%{rotate:-.7deg}70%{rotate:.35deg}88%{rotate:-.12deg}100%{rotate:0deg}}
+
+/* ---------- rack (all-sale extras) ---------- */
+.cc-rack{border:1px solid var(--line);border-radius:calc(var(--radius-card) + 6px);background:linear-gradient(180deg,var(--surface),var(--bg));padding:2rem 0 2.4rem}
+.cc-rack-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;flex-wrap:wrap;padding:0 2.2rem 1.6rem}
+.cc-rack-head .cc-h2{font-size:clamp(1.9rem,3.6vw,2.6rem)}
+.cc-rack-head p{color:var(--ink-muted);font-size:.95rem;max-width:30rem}
+.cc-rail{position:relative;border-top:1px solid var(--line);padding:2.6rem 2.2rem 0;display:flex;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.cc-rail .cc-card{--card-w:var(--rack-w);--card-h:var(--rack-h);scroll-snap-align:center}
+.cc-rail .cc-card::before{content:"";position:absolute;left:50%;top:-2.6rem;height:2.6rem;width:1px;background:var(--line)}
+.cc-rail .cc-front{padding:1rem}
+.cc-rail .cc-num{display:none}
+.cc-rail .cc-shot{max-height:11rem}
+.cc-rail .cc-cover b{font-size:1.15rem}
+.cc-rail .cc-tag{font-size:.92rem}
+.cc-rail .cc-back h3{font-size:1.3rem}
+@media (min-width:1100px){.cc-rail{justify-content:center;overflow:visible}}
+
+/* ---------- picks tray ---------- */
+.cc-picks{text-align:center;padding:2.2rem 0 0;color:var(--ink-muted);font-size:.92rem}
+.cc-picks-list{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;margin:1rem 0 1.2rem}
+.cc-chip{border:1px solid var(--mark);color:var(--ink);border-radius:var(--radius-pill);padding:.4rem .9rem;font-size:.85rem;background:color-mix(in srgb,var(--mark) 8%,transparent)}
+.cc-ics{font-family:var(--font-label);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-ink);min-height:44px;display:inline-flex;align-items:center;gap:.5rem}
+
+/* ---------- how it works ---------- */
+.cc-how-head{display:grid;gap:1.2rem;margin-bottom:2.6rem}
+.cc-steps{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.cc-steps li{display:grid;grid-template-columns:minmax(8rem,17rem) 1fr auto;gap:1.2rem;align-items:center;padding:1.2rem 0;border-bottom:1px solid var(--line)}
+.cc-steps .cc-day{white-space:nowrap;font-family:var(--font-label);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted)}
+.cc-steps .cc-what{font-family:var(--font-display);font-weight:var(--display-weight);font-size:clamp(1.15rem,2vw,1.5rem);letter-spacing:-.01em}
+.cc-steps .cc-pill{justify-self:end}
+.cc-steps li[data-status="live"] .cc-pill{background:var(--accent);color:var(--on-accent);border-color:var(--accent-edge)}
+.cc-steps li[data-status="closed"] .cc-pill{text-decoration:line-through}
+
+/* ---------- founder note ---------- */
+.cc-note{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(2rem,6vw,5.5rem);align-items:center}
+.cc-arch{position:relative;aspect-ratio:4/5;border-radius:999px 999px var(--radius-card) var(--radius-card);overflow:visible}
+.cc-arch img,.cc-arch .cc-mono{width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.cc-mono{display:grid;place-items:center;background:linear-gradient(170deg,var(--urgency),color-mix(in srgb,var(--urgency) 70%,var(--shadow)));font-family:var(--font-display);
+  font-weight:var(--display-weight);font-size:clamp(4rem,12vw,9rem);color:var(--on-urgency);letter-spacing:-.04em}
+.cc-badge{position:absolute;right:-1.8rem;top:52%;width:7.5rem;height:7.5rem}
+.cc-badge svg{width:100%;height:100%;animation:cc-spin 26s linear infinite}
+.cc-badge text{fill:var(--ink-muted);font-family:var(--font-label);font-size:8.6px;letter-spacing:.32em;text-transform:uppercase}
+.cc-badge i{position:absolute;inset:28%;border-radius:50%;background:var(--bg);display:grid;place-items:center;font-style:normal;color:var(--accent-ink);box-shadow:0 0 0 1px var(--line)}
+@keyframes cc-spin{to{rotate:360deg}}
+.cc-note .cc-h2{margin:1.2rem 0 1.5rem}
+.cc-note p{color:var(--ink-muted);max-width:36rem;margin-bottom:1rem}
+.cc-sign{font-family:var(--font-accent);font-style:var(--accent-style);font-size:1.6rem;color:var(--ink);margin-top:1.4rem}
+
+/* ---------- photo strip ---------- */
+.cc-strip{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;height:clamp(18rem,36vw,30rem)}
+.cc-strip img{width:100%;height:100%;object-fit:cover;filter:contrast(var(--img-contrast)) saturate(var(--img-saturate))}
+
+/* ---------- faq ---------- */
+.cc-faq{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,6fr);gap:clamp(2rem,6vw,5rem);align-items:start}
+.cc-faq details{border-bottom:1px solid var(--line)}
+.cc-faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.3rem 0;cursor:pointer;font-weight:500;font-size:1.05rem}
+.cc-faq summary::-webkit-details-marker{display:none}
+.cc-faq summary::after{content:"+";font-size:1.3rem;color:var(--accent-ink);transition:rotate var(--t-fast) var(--ease)}
+.cc-faq details[open] summary::after{rotate:45deg}
+.cc-faq details p{color:var(--ink-muted);padding:0 2rem 1.4rem 0}
+
+/* ---------- closing ---------- */
+.cc-close{display:grid;grid-template-columns:1.1fr 1fr;border:1px solid var(--line);border-radius:calc(var(--radius-card) + 6px);overflow:hidden;background:var(--surface)}
+.cc-close-text{padding:clamp(2rem,5vw,4rem)}
+.cc-close-text .cc-h2{margin:1.1rem 0 1.2rem}
+.cc-close-text p{color:var(--ink-muted);margin-bottom:2rem}
+.cc-close-art{position:relative;min-height:22rem;display:flex;align-items:flex-end;justify-content:center;padding:2rem}
+.cc-close-art > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(var(--img-brightness)) contrast(var(--img-contrast)) saturate(var(--img-saturate))}
+.cc-close-art.cc-hero-bg--proc{position:relative}
+.cc-glass{position:relative;width:min(22rem,100%);background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border:1px solid color-mix(in srgb,var(--ink) 14%,transparent);border-radius:var(--radius-card);padding:.4rem 1.2rem;box-shadow:0 20px 50px -20px var(--shade)}
+.cc-glass li{list-style:none;display:flex;gap:.8rem;padding:.85rem 0;font-size:.9rem;border-bottom:1px solid var(--line)}
+.cc-glass li:last-child{border:0}
+.cc-glass li::before{content:"✦";color:var(--accent-ink)}
+.cc-glass ul{margin:0;padding:0}
+
+/* ---------- footer ---------- */
+.cc-foot{padding:3.5rem 0 4rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;color:var(--ink-muted);font-size:.8rem}
+.cc-foot b{display:block;font-family:var(--font-label);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);font-size:1rem}
+.cc-foot nav{display:flex;gap:1.4rem}
+.cc-foot a{text-decoration:none}
+.cc-foot a:hover{color:var(--ink)}
+
+/* ---------- sampler ---------- */
+.cc-sampler .cc-grid{align-items:flex-start;max-width:calc(var(--card-w) * 2 + 3.2rem);margin-inline:auto;row-gap:3.5rem}
+.cc-sample{display:flex;flex-direction:column;align-items:center;gap:1rem;width:var(--card-w)}
+.cc-sample header{text-align:center;min-height:5.5rem}
+.cc-sample > header h3{font-family:var(--font-display);font-weight:var(--display-weight);font-size:1.35rem;letter-spacing:-.01em}
+.cc-sample > header p{color:var(--ink-muted);font-size:.85rem;margin-top:.3rem}
+.cc-sample > header .cc-label{color:var(--accent-ink);margin-bottom:.4rem}
+.cc-sampler-head{text-align:center;margin-bottom:3rem}
+.cc-sampler-head p{color:var(--ink-muted);margin-top:.8rem}
+
+/* ---------- reveal on scroll ---------- */
+.cc-in{opacity:0;translate:0 24px;transition:opacity .8s var(--ease),translate .8s var(--ease)}
+.cc-in.cc-seen{opacity:1;translate:0 0}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .cc-note,.cc-faq,.cc-close{grid-template-columns:1fr}
+  .cc-arch{max-width:22rem}
+  .cc-badge{right:-1rem;width:6rem;height:6rem}
+  .cc-strip{grid-auto-flow:row;grid-template-columns:1fr 1fr;grid-auto-columns:auto;height:auto}
+  .cc-strip img{aspect-ratio:4/5;height:auto}
+  .cc-steps li{grid-template-columns:1fr auto}
+  .cc-steps .cc-day{grid-column:1 / -1}
+}
+@media (max-width:760px){
+  .cc-bar-msg .cc-long,.cc-lg,.cc-bar .cc-btn-t{display:none}
+  .cc-bar-msg .cc-short,.cc-sm,.cc-bar .cc-btn-s{display:inline}
+  .cc-bar-in{flex-wrap:wrap;justify-content:space-between;gap:.3rem 1rem;padding-block:.5rem;min-height:0}
+  .cc-bar-msg{width:100%;font-size:.62rem}
+  .cc-clock{gap:.7rem}
+  .cc-clock small{font-size:.7rem;letter-spacing:0;text-transform:none}
+  .cc-bar .cc-btn{min-height:40px;padding:.5rem 1rem;font-size:.78rem}
+  .cc-card{--card-w:min(88vw,340px)}
+  .cc-rack-head,.cc-rail{padding-inline:1.2rem}
+  .cc-rack{border-radius:0;border-inline:0}
+  .cc-rack-wrap{width:100%}
+}
+
+/* ---------- reduced motion: every loop and flourish off ---------- */
+@media (prefers-reduced-motion:reduce){
+  .cc *,.cc *::before,.cc *::after{animation:none !important;transition-duration:.01ms !important}
+  .cc-in{opacity:1;translate:none}
+  .cc-card.cc-marked .cc-stamp{opacity:.92;transform:rotate(-12deg)}
+  .cc-card.cc-marked .cc-tagmark{opacity:1;transform:none}
+  .cc-shot{translate:none}
+}
+
+/* CUSTOM:START */
+/* CUSTOM:END */
+</style>
+</head>
+<body>
+<div class="cc" id="cc" data-mode="full">
+  <div class="cc-bar" id="cc-bar" role="region" aria-label="Sale countdown"></div>
+  <main id="cc-main"></main>
+</div>
+<script type="application/json" id="cc-sale">{}</script>
+<script>
+/* ==========================================================================
+   Countdown Catalog engine. Reads #cc-sale, renders, runs the clock.
+   No brand values here: all colour and type come from the TOKENS block.
+   ========================================================================== */
+(() => {
+  const root = document.getElementById('cc');
+  const main = document.getElementById('cc-main');
+  const bar = document.getElementById('cc-bar');
+  let S;
+  try { S = JSON.parse(document.getElementById('cc-sale').textContent || '{}'); }
+  catch (e) { main.innerHTML = '<p class="cc-wrap" style="padding:4rem 0">The sale data could not be read.</p>'; return; }
+  const MODE = root.dataset.mode || S.mode || 'full';
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const HOVER = matchMedia('(hover: hover)').matches;
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  const id = S.id || 'sale';
+  const locale = S.locale || 'en-US';
+  const tz = S.timezone || undefined;
+
+  /* ---------- words (all overridable from the sale file) ---------- */
+  const L = Object.assign({
+    live: 'Live now', closed: 'Closed', soon: 'Coming soon', opens: 'Opens {day}',
+    reveal: 'Turn over', back: 'Turn back', buy: 'Shop now', go_live: 'Get it now',
+    go_remind: 'Remind me', go_closed: 'This one has closed', more: 'Scroll for more',
+    mark: 'Save {name}', best_for: 'Best for', inside: "What's inside",
+    picks_empty: 'Tick the box on any card to save it, and your picks will show here.',
+    picks_title: 'Your saved picks', ics: 'Add reminders to my calendar',
+    days: 'Days', hours: 'Hours', minutes: 'Minutes', seconds: 'Seconds', d: 'd', h: 'h', m: 'm', s: 's',
+    flagship: 'The flagship', cta_single: "Shop today's deal", cta_many: 'See the deals'
+  }, S.labels || {});
+  const fill = (t, o) => String(t).replace(/\{(\w+)\}/g, (m, k) => (o && o[k] != null ? o[k] : m));
+
+  /* ---------- signature interaction (the menu) ---------- */
+  const PAIRS = {
+    'turn-circle': { reveal: 'flip', mark: 'circle', skin: 'plain', mark_word: 'Circled', name: 'Turn & Circle', desc: 'The card turns over for the details. A hand-drawn ink circle marks the ones you want.', reveal_word: 'Turn over', back_word: 'Turn back' },
+    'ticket-stamp': { reveal: 'peel', mark: 'stamp', skin: 'ticket', mark_word: 'Saved', name: 'Ticket & Stamp', desc: 'Each offer is a ticket. The stub peels away for the details, and a stamp lands on the ones you save.', reveal_word: 'Tear it open', back_word: 'Put it back' },
+    'sheet-highlight': { reveal: 'slide', mark: 'highlight', skin: 'plain', mark_word: 'Saved', name: 'Sheet & Highlight', desc: 'A details sheet slides up over the card. A marker swipe highlights the ones you save.', reveal_word: 'See details', back_word: 'Close' },
+    'gift-tag': { reveal: 'lift', mark: 'tag', skin: 'gift', mark_word: 'Saved', name: 'Gift & Tag', desc: 'The front lifts off like a box lid. A gift tag swings onto the ones you save.', reveal_word: 'Open it', back_word: 'Close the lid' }
+  };
+  function pairing(p) {
+    const base = PAIRS[(p && p.preset) || (typeof p === 'string' ? p : '') ] || PAIRS['turn-circle'];
+    const o = typeof p === 'object' && p ? p : {};
+    return { reveal: o.reveal || base.reveal, mark: o.mark || base.mark, skin: o.skin || base.skin,
+      reveal_word: o.reveal_word || (S.labels && S.labels.reveal) || base.reveal_word,
+      back_word: o.back_word || (S.labels && S.labels.back) || base.back_word,
+      mark_word: o.mark_word || (S.labels && S.labels.mark_word) || base.mark_word, name: base.name, desc: base.desc };
+  }
+  const PAIR = pairing(S.interaction);
+
+  /* ---------- time ---------- */
+  const T = S.timer || { mode: 'fixed' };
+  const H = 3600e3;
+  let base = 0;
+  if (T.mode === 'evergreen') {
+    const k = 'cc-first-' + id; base = +store.get(k);
+    if (!base) { base = Date.now(); store.set(k, String(base)); }
+  }
+  const offers = (S.offers || []).map((o, i) => Object.assign({ id: 'o' + (i + 1), group: 'catalog' }, o));
+  function win(o) {
+    if (T.mode === 'evergreen') return { open: base + (o.opens_after_hours || 0) * H, close: base + (o.closes_after_hours ?? T.hours ?? 72) * H };
+    if (T.mode === 'deadline-funnel') return { open: -Infinity, close: Infinity };
+    return { open: Date.parse(o.opens || S.start), close: Date.parse(o.closes || S.end) };
+  }
+  const status = (o, now) => { const w = win(o); return now < w.open ? 'upcoming' : now >= w.close ? 'closed' : 'live'; };
+  const dayName = ms => new Intl.DateTimeFormat(locale, { weekday: 'long', timeZone: tz }).format(ms);
+  const dateName = ms => new Intl.DateTimeFormat(locale, { weekday: 'long', month: 'long', day: 'numeric', timeZone: tz }).format(ms);
+  function soonLabel(o) {
+    const w = win(o);
+    if (!isFinite(w.open)) return L.soon;
+    if (T.mode === 'evergreen') return L.soon;
+    const d = (w.open - Date.now()) < 6.5 * 24 * H ? dayName(w.open) : dateName(w.open);
+    return fill(o.opens_label || L.opens, { day: d });
+  }
+  function pillText(o, st) { return st === 'live' ? (o.live_label || L.live) : st === 'closed' ? (o.closed_label || L.closed) : soonLabel(o); }
+  function phase(now) {
+    if (T.mode === 'deadline-funnel') return 'live';
+    const ws = offers.map(win);
+    const first = Math.min(...ws.map(w => w.open)), last = Math.max(...ws.map(w => w.close));
+    const start = T.mode === 'fixed' && S.start ? Date.parse(S.start) : first;
+    const end = T.mode === 'fixed' && S.end ? Date.parse(S.end) : last;
+    return now < start ? 'before' : now >= end ? 'after' : 'live';
+  }
+  function barTarget(now, ph) {
+    const ws = offers.map(win);
+    if (ph === 'before') return T.mode === 'fixed' && S.start ? Date.parse(S.start) : Math.min(...ws.map(w => w.open));
+    const end = T.mode === 'fixed' && S.end ? Date.parse(S.end) : Math.max(...ws.map(w => w.close));
+    if ((S.bar && S.bar.target) === 'sale') return end;
+    const liveCloses = offers.filter(o => o.group === 'catalog' && status(o, now) === 'live').map(o => win(o).close).filter(c => c < end);
+    return liveCloses.length ? Math.min(...liveCloses) : end;
+  }
+  function mainCTA(now, ph) {
+    const B = S.before || {}, A = S.after || {}, C = S.cta || {};
+    if (ph === 'before') return { href: B.link || '#cc-catalog', label: B.cta || 'Get on the early list', short: B.cta_short || 'Join' };
+    if (ph === 'after') return { href: A.link || '#cc-catalog', label: A.cta || 'See what is next', short: A.cta_short || 'See more' };
+    const live = offers.filter(o => o.group === 'catalog' && status(o, now) === 'live');
+    if (live.length === 1 && live[0].link) return { href: live[0].link, label: C.single || L.cta_single, short: C.short || 'Shop' };
+    return { href: '#cc-catalog', label: C.many || L.cta_many, short: C.short || 'Shop' };
+  }
+
+  /* ---------- small builders ---------- */
+  const ARROW = '<span class="cc-arrow" aria-hidden="true">→</span>';
+  const TURN_ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2.5v3h-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const RING = '<svg class="cc-ring" viewBox="0 0 220 80" preserveAspectRatio="none" aria-hidden="true"><path d="M30 22C70 5 165 4 192 25C212 41 188 70 115 74C52 78 9 64 12 42C15 23 56 11 108 10"/></svg>';
+  const pad = n => String(n).padStart(2, '0');
+  const isExt = h => /^https?:/i.test(h || '');
+  const linkAttrs = h => isExt(h) ? ' target="_blank" rel="noopener"' : '';
+  function cover(o) {
+    if (o.image) return `<img src="${esc(o.image)}" alt="${esc(o.image_alt || o.name)}" width="600" height="800" loading="lazy" decoding="async">`;
+    return `<div class="cc-cover" data-v="${(cover.n = (cover.n || 0) + 1) % 3}" role="img" aria-label="${esc(o.name)}"><b>${esc(o.cover_title || o.name)}</b>${o.cover_line ? `<i>${esc(o.cover_line)}</i>` : ''}</div>`;
+  }
+  function card(o, i, pair, numbered) {
+    const st = status(o, Date.now());
+    return `<article class="cc-card${MODE !== 'sampler' ? ' cc-in' : ''}" data-id="${esc(o.id)}" data-status="${st}" data-reveal="${pair.reveal}" data-mark="${pair.mark}" data-skin="${pair.skin}"${o.flagship ? ' data-flagship' : ''}>
+  ${o.flagship ? `<span class="cc-flag">${esc(o.flagship_label || L.flagship)}</span>` : ''}
+  <div class="cc-card-in">
+    <div class="cc-face cc-front">
+      <header class="cc-top">
+        ${numbered ? `<span class="cc-num">${pad(i + 1)}</span>` : ''}
+        <span class="cc-pill">${esc(pillText(o, st))}</span>
+        <label class="cc-pick"><input type="checkbox" aria-label="${esc(fill(L.mark, { name: o.name }))}"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="4"/><path d="M7 14.5l4.5 4.5L21 8.5"/></svg></label>
+      </header>
+      <div class="cc-media"><div class="cc-shot">${cover(o)}</div></div>
+      <p class="cc-tag"><span class="cc-tag-t">${esc(o.tagline || '')}</span>${RING}</p>
+      <div class="cc-acts">
+        <button class="cc-turn" type="button" aria-expanded="false">${esc(pair.reveal_word)} ${TURN_ICON}</button>
+        ${o.link ? `<a class="cc-buy" href="${esc(o.link)}"${linkAttrs(o.link)}>${esc(o.buy_label || L.buy)} <span aria-hidden="true">↗</span></a>` : ''}
+      </div>
+      <span class="cc-stamp" aria-hidden="true">${esc(pair.mark_word)}</span>
+      <span class="cc-tagmark" aria-hidden="true"><span>${esc(pair.mark_word)}</span></span>
+    </div>
+    <div class="cc-face cc-back" inert>
+      <div class="cc-back-scroll"><div class="cc-back-body">
+        ${o.kicker ? `<p class="cc-label cc-kick">${esc(o.kicker)}</p>` : ''}
+        <h3>${esc(o.name)}</h3>
+        ${o.description ? `<p>${esc(o.description)}</p>` : ''}
+        ${o.best_for ? `<div class="cc-best"><p class="cc-label">${esc(L.best_for)}</p><p>${esc(o.best_for)}</p></div>` : ''}
+        ${o.inside && o.inside.length ? `<p class="cc-label" style="margin-top:1rem">${esc(L.inside)}</p><ul class="cc-inside">${o.inside.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+        ${o.price ? `<p class="cc-price">${esc(o.price)}${o.was ? `<s>${esc(o.was)}</s>` : ''}</p>` : ''}
+      </div>
+      <span class="cc-label cc-more" aria-hidden="true">${esc(L.more)} <i>↓</i></span></div>
+      <div class="cc-back-foot">
+        <a class="cc-go" href="${esc(o.link || '#')}"${linkAttrs(o.link)}></a>
+        <button class="cc-turnback" type="button">${esc(pair.back_word)} ${TURN_ICON}</button>
+      </div>
+    </div>
+  </div>
+</article>`;
+  }
+
+  /* ---------- sections ---------- */
+  const catalog = offers.filter(o => o.group !== 'rack');
+  const rack = offers.filter(o => o.group === 'rack');
+  const now0 = Date.now();
+
+  function heroHTML() {
+    const h = S.hero || {};
+    const bg = h.image ? `<div class="cc-hero-bg"><img src="${esc(h.image)}" alt="" fetchpriority="high"></div>` : '<div class="cc-hero-bg cc-hero-bg--proc"></div>';
+    return `<header class="cc-hero cc-grain">${bg}<div class="cc-wrap">
+      ${h.eyebrow ? `<p class="cc-label">${esc(h.eyebrow)}</p>` : ''}
+      <h1 class="cc-h1">${esc(h.title || S.name || '')}</h1>
+      ${h.subtitle ? `<p class="cc-sub">${esc(h.subtitle)}</p>` : ''}
+      <a class="cc-btn cc-btn--glow" data-cc-cta href="#cc-catalog"><span class="cc-btn-t">${esc(L.cta_single)}</span>${ARROW}</a>
+      ${h.hint ? `<p class="cc-hint">${esc(h.hint)}</p>` : ''}
+    </div></header>`;
+  }
+  function catalogHTML(list) {
+    return `<section class="cc-catalog" id="cc-catalog" aria-label="${esc(S.catalog_label || 'The offers')}"><div class="cc-wrap">
+      <div class="cc-grid" data-count="${list.length}">${list.map((o, i) => card(o, i, PAIR, true)).join('')}</div></div></section>`;
+  }
+  function rackHTML() {
+    if (!rack.length) return '';
+    const r = S.rack || {};
+    return `<section class="cc-sec" style="padding-top:clamp(2rem,4vw,3rem)" aria-label="${esc(r.title || 'Extras')}"><div class="cc-wrap cc-rack-wrap"><div class="cc-rack cc-in">
+      <div class="cc-rack-head"><div>${r.eyebrow ? `<p class="cc-label cc-eyebrow">${esc(r.eyebrow)}</p>` : ''}<h2 class="cc-h2">${esc(r.title || '')}</h2></div>${r.text ? `<p>${esc(r.text)}</p>` : ''}</div>
+      <div class="cc-rail">${rack.map((o, i) => card(o, i, PAIR, false)).join('')}</div>
+    </div></div></section>`;
+  }
+  const picksHTML = () => `<div class="cc-wrap cc-picks" id="cc-picks" aria-live="polite"></div>`;
+  function howHTML() {
+    const w = S.how; if (!w || T.mode !== 'fixed') return '';
+    const rows = catalog.map(o => { const st = status(o, now0); const wd = win(o);
+      return `<li data-id="${esc(o.id)}" data-status="${st}"><span class="cc-day">${esc(o.day_label || dateName(wd.open))}</span><span class="cc-what">${esc(o.name)}</span><span class="cc-pill">${esc(pillText(o, st))}</span></li>`; }).join('');
+    return `<section class="cc-sec"><div class="cc-wrap"><div class="cc-how-head cc-in">
+      ${w.eyebrow ? `<p class="cc-label cc-eyebrow">${esc(w.eyebrow)}</p>` : ''}<h2 class="cc-h2">${esc(w.title || '')}${w.title_turn ? ` <em>${esc(w.title_turn)}</em>` : ''}</h2>
+      ${w.text ? `<p style="color:var(--ink-muted);max-width:40rem">${esc(w.text)}</p>` : ''}</div>
+      <ol class="cc-steps cc-in">${rows}</ol></div></section>`;
+  }
+  function noteHTML() {
+    const n = S.note; if (!n) return '';
+    const art = n.photo ? `<img src="${esc(n.photo)}" alt="${esc(n.photo_alt || '')}" loading="lazy" width="800" height="1000">` : `<div class="cc-mono" aria-hidden="true">${esc(n.monogram || (S.brand_name || '').slice(0, 1))}</div>`;
+    const ring = (n.badge || '').toUpperCase();
+    return `<section class="cc-sec"><div class="cc-wrap cc-note">
+      <div class="cc-arch cc-in">${art}${ring ? `<div class="cc-badge" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><path id="cc-badge-p" d="M50 50m-38 0a38 38 0 1 1 76 0a38 38 0 1 1-76 0"/></defs><text><textPath href="#cc-badge-p">${esc(ring)} · ${esc(ring)} · </textPath></text></svg><i>✦</i></div>` : ''}</div>
+      <div class="cc-in">${n.eyebrow ? `<p class="cc-label cc-eyebrow">${esc(n.eyebrow)}</p>` : ''}
+        <h2 class="cc-h2">${esc(n.title || '')}${n.title_turn ? ` <em>${esc(n.title_turn)}</em>` : ''}</h2>
+        ${(n.body || []).map(p => `<p>${esc(p)}</p>`).join('')}
+        ${n.sign ? `<p class="cc-sign">${esc(n.sign)}</p>` : ''}</div>
+    </div></section>`;
+  }
+  function stripHTML() {
+    const s = S.strip; if (!s || !s.length) return '';
+    return `<div class="cc-strip cc-in" aria-hidden="true">${s.map(x => `<img src="${esc(x.src || x)}" alt="" loading="lazy" width="600" height="800">`).join('')}</div>`;
+  }
+  function faqHTML() {
+    const f = S.faq; if (!f || !f.items || !f.items.length) return '';
+    return `<section class="cc-sec"><div class="cc-wrap cc-faq">
+      <div class="cc-in">${f.eyebrow ? `<p class="cc-label cc-eyebrow">${esc(f.eyebrow)}</p>` : ''}<h2 class="cc-h2" style="margin-top:1.1rem">${esc(f.title || '')}</h2></div>
+      <div class="cc-in">${f.items.map(q => `<details><summary>${esc(q.q)}</summary><p>${esc(q.a)}</p></details>`).join('')}</div>
+    </div></section>`;
+  }
+  function closeHTML() {
+    const c = S.closing; if (!c) return '';
+    const art = c.image ? `<div class="cc-close-art"><img src="${esc(c.image)}" alt="" loading="lazy">` : '<div class="cc-close-art cc-hero-bg--proc cc-grain">';
+    return `<section class="cc-sec"><div class="cc-wrap"><div class="cc-close cc-in">
+      <div class="cc-close-text">${c.eyebrow ? `<p class="cc-label cc-eyebrow">${esc(c.eyebrow)}</p>` : ''}
+        <h2 class="cc-h2">${esc(c.title || '')}${c.title_turn ? ` <em>${esc(c.title_turn)}</em>` : ''}</h2>
+        ${c.text ? `<p>${esc(c.text)}</p>` : ''}
+        <a class="cc-btn cc-btn--glow" data-cc-cta href="#cc-catalog"><span class="cc-btn-t">${esc(L.cta_single)}</span>${ARROW}</a></div>
+      ${art}${c.facts && c.facts.length ? `<div class="cc-glass"><ul>${c.facts.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>` : ''}</div>
+    </div></div></section>`;
+  }
+  function footHTML() {
+    const f = S.footer || {};
+    return `<footer class="cc-wrap cc-foot"><div><b>${esc(S.brand_name || '')}</b>${f.line ? `<span>${esc(f.line)}</span>` : ''}</div>
+      <span>© ${new Date().getFullYear()} ${esc(S.brand_name || '')}</span>
+      <nav>${(f.links || []).map(l => `<a href="${esc(l.href)}">${esc(l.label)}</a>`).join('')}</nav></footer>`;
+  }
+  function samplerHTML() {
+    const pick = Object.keys(PAIRS);
+    const src = catalog.length ? catalog : offers;
+    return `<section class="cc-sec cc-sampler"><div class="cc-wrap">
+      <div class="cc-sampler-head"><p class="cc-label" style="color:var(--ink-muted)">${esc((S.sampler && S.sampler.eyebrow) || 'Signature interactions')}</p>
+        <h2 class="cc-h2" style="margin-top:1rem">${esc((S.sampler && S.sampler.title) || 'Try each one, then pick your favourite.')}</h2>
+        <p>${esc((S.sampler && S.sampler.text) || 'Click the button on each card to open it, and tick the box to save it.')}</p></div>
+      <div class="cc-grid">${pick.map((k, i) => { const p = pairing({ preset: k }); p.reveal_word = PAIRS[k].reveal_word; p.back_word = PAIRS[k].back_word; p.mark_word = PAIRS[k].mark_word;
+        return `<div class="cc-sample"><header><p class="cc-label">Option ${i + 1}</p><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p></header>${card(src[i % src.length], i, p, true)}</div>`; }).join('')}</div>
+    </div></section>`;
+  }
+
+  /* ---------- assemble by mode ---------- */
+  bar.innerHTML = `<div class="cc-bar-in">
+    <p class="cc-bar-msg"><span class="cc-long"></span><span class="cc-short"></span></p>
+    ${T.mode === 'deadline-funnel' ? `<div class="cc-df">${T.bar_html || ''}</div>` : `<div class="cc-clock" role="timer" aria-live="off">
+      ${[['d', L.days], ['h', L.hours], ['m', L.minutes], ['s', L.seconds]].map(([u, w]) => `<span><b data-u="${u}">00</b><small><span class="cc-lg">${esc(w)}</span><span class="cc-sm">${esc(L[u])}</span></small></span>`).join('')}</div>`}
+    <a class="cc-btn" data-cc-cta href="#cc-catalog"><span class="cc-btn-t">${esc(L.cta_single)}</span><span class="cc-btn-s"></span>${ARROW}</a></div>`;
+
+  if (MODE === 'sampler') main.innerHTML = samplerHTML();
+  else if (MODE === 'sample') main.innerHTML = heroHTML() + catalogHTML(catalog.slice(0, 2));
+  else main.innerHTML = heroHTML() + catalogHTML(catalog) + rackHTML() + picksHTML() + howHTML() + noteHTML() + stripHTML() + faqHTML() + closeHTML() + footHTML();
+
+  /* ---------- live state ---------- */
+  function applyState() {
+    const now = Date.now(), ph = phase(now);
+    bar.dataset.phase = ph;
+    const msg = (S.bar && S.bar[ph]) || {};
+    const longT = typeof msg === 'string' ? msg : msg.long || '', shortT = typeof msg === 'string' ? msg : msg.short || longT;
+    bar.querySelector('.cc-long').textContent = longT; bar.querySelector('.cc-short').textContent = shortT;
+    const cta = mainCTA(now, ph);
+    root.querySelectorAll('[data-cc-cta]').forEach(a => { a.href = cta.href; a.querySelector('.cc-btn-t').textContent = cta.label; const sh = a.querySelector('.cc-btn-s'); if (sh) sh.textContent = cta.short;
+      if (isExt(cta.href)) { a.target = '_blank'; a.rel = 'noopener'; } else { a.removeAttribute('target'); } });
+    root.querySelectorAll('.cc-card[data-id], .cc-steps li[data-id]').forEach(el => {
+      const o = offers.find(x => x.id === el.dataset.id); if (!o) return;
+      const st = status(o, now); el.dataset.status = st;
+      const pill = el.querySelector('.cc-pill'); if (pill) pill.textContent = pillText(o, st);
+      const go = el.querySelector('.cc-go'); if (go) {
+        if (st === 'live' && o.link) { go.textContent = o.cta || L.go_live; go.removeAttribute('aria-disabled'); go.href = o.link; }
+        else if (st === 'upcoming' && S.before && S.before.link) { go.textContent = S.before.card_cta || L.go_remind; go.href = S.before.link; go.removeAttribute('aria-disabled'); }
+        else { go.textContent = st === 'closed' ? L.go_closed : soonLabel(o); go.setAttribute('aria-disabled', 'true'); go.removeAttribute('href'); }
+      }
+      const buy = el.querySelector('.cc-buy'); if (buy) buy.hidden = st !== 'live';
+    });
+    return { now, ph };
+  }
+  let lastSig = '';
+  function tick() {
+    const now = Date.now(), ph = phase(now);
+    const sig = ph + offers.map(o => status(o, now)).join('');
+    if (sig !== lastSig) { lastSig = sig; applyState(); }
+    if (T.mode === 'deadline-funnel' || ph === 'after') return;
+    let left = Math.max(0, barTarget(now, ph) - now);
+    const d = Math.floor(left / 864e5); left -= d * 864e5;
+    const h = Math.floor(left / H); left -= h * H;
+    const m = Math.floor(left / 6e4); left -= m * 6e4;
+    const s = Math.floor(left / 1e3);
+    const set = (u, v) => { const el = bar.querySelector(`[data-u="${u}"]`); if (el && el.textContent !== pad(v)) el.textContent = pad(v); };
+    set('d', d); set('h', h); set('m', m); set('s', s);
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* ---------- reveal (open / close a card) ---------- */
+  function setOpen(c, open) {
+    c.classList.toggle('cc-open', open);
+    const front = c.querySelector('.cc-front'), back = c.querySelector('.cc-back');
+    back.inert = !open; front.inert = open;
+    c.querySelector('.cc-turn').setAttribute('aria-expanded', String(open));
+    (open ? c.querySelector('.cc-turnback') : c.querySelector('.cc-turn')).focus({ preventScroll: true });
+    if (open) checkEnd(c);
+  }
+  function checkEnd(c) { const b = c.querySelector('.cc-back-body'); c.classList.toggle('cc-end', b.scrollHeight - b.scrollTop - b.clientHeight < 8); }
+  root.addEventListener('click', e => {
+    const t = e.target.closest('.cc-turn, .cc-turnback'); if (!t) return;
+    const c = t.closest('.cc-card'); setOpen(c, t.classList.contains('cc-turn'));
+  });
+  root.addEventListener('keydown', e => { if (e.key !== 'Escape') return; const c = e.target.closest && e.target.closest('.cc-card.cc-open'); if (c) setOpen(c, false); });
+  root.querySelectorAll('.cc-back-body').forEach(b => b.addEventListener('scroll', () => checkEnd(b.closest('.cc-card')), { passive: true }));
+
+  /* ---------- mark (save picks, remembered in this browser) ---------- */
+  const PK = 'cc-picks-' + id;
+  let picks = new Set(MODE === 'full' ? JSON.parse(store.get(PK) || '[]') : []);
+  root.querySelectorAll('.cc-ring path').forEach(p => { try { p.style.setProperty('--len', Math.ceil(p.getTotalLength())); } catch (e) {} });
+  function syncMarks() {
+    root.querySelectorAll('.cc-card[data-id]').forEach(c => {
+      const on = picks.has(c.dataset.id) && !c.closest('.cc-sampler'); const inp = c.querySelector('.cc-pick input');
+      if (!c.closest('.cc-sampler')) { inp.checked = on; c.classList.toggle('cc-marked', on); }
+    });
+    renderPicks();
+  }
+  root.addEventListener('change', e => {
+    const inp = e.target.closest('.cc-pick input'); if (!inp) return;
+    const c = inp.closest('.cc-card'); c.classList.toggle('cc-marked', inp.checked);
+    if (c.closest('.cc-sampler')) return;
+    inp.checked ? picks.add(c.dataset.id) : picks.delete(c.dataset.id);
+    if (MODE === 'full') store.set(PK, JSON.stringify([...picks]));
+    renderPicks();
+  });
+  function renderPicks() {
+    const box = document.getElementById('cc-picks'); if (!box) return;
+    const list = offers.filter(o => picks.has(o.id));
+    if (!list.length) { box.innerHTML = `<p>${esc(L.picks_empty)}</p>`; return; }
+    const upcoming = list.filter(o => status(o, Date.now()) === 'upcoming' && isFinite(win(o).open));
+    box.innerHTML = `<p class="cc-label">${esc(L.picks_title)}</p><div class="cc-picks-list">${list.map(o => {
+      const st = status(o, Date.now());
+      const when = st === 'live' ? L.live : st === 'closed' ? L.closed : (T.mode === 'fixed' ? dayName(win(o).open) : L.soon);
+      return `<span class="cc-chip">${esc(o.name)} · ${esc(when)}</span>`; }).join('')}</div>
+      ${upcoming.length && T.mode === 'fixed' ? `<button class="cc-ics" type="button">${esc(L.ics)} ↓</button>` : ''}`;
+    const btn = box.querySelector('.cc-ics'); if (btn) btn.onclick = () => downloadICS(upcoming);
+  }
+  function downloadICS(list) {
+    const f = ms => new Date(ms).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    const e = s => String(s).replace(/([,;\\])/g, '\\$1');
+    const url = location.href.split('#')[0];
+    const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Countdown Catalog//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
+    list.forEach(o => { const w = win(o); lines.push('BEGIN:VEVENT', `UID:${e(id)}-${e(o.id)}@countdown-catalog`, 'DTSTAMP:' + f(Date.now()),
+      'DTSTART:' + f(w.open), 'DTEND:' + f(w.open + 1800e3), 'SUMMARY:' + e(fill(L.ics_event || '{name} opens', { name: o.name })), 'URL:' + url, 'END:VEVENT'); });
+    lines.push('END:VCALENDAR');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([lines.join('\r\n')], { type: 'text/calendar' }));
+    a.download = (id || 'sale') + '-reminders.ics'; document.body.appendChild(a); a.click(); a.remove();
+  }
+  syncMarks();
+
+  /* ---------- pointer drift on product images ---------- */
+  if (HOVER && !RM) root.querySelectorAll('.cc-card').forEach(c => {
+    const shot = c.querySelector('.cc-shot');
+    c.addEventListener('pointermove', e => { const r = c.getBoundingClientRect();
+      shot.style.setProperty('--dx', ((e.clientX - r.left) / r.width - .5).toFixed(3)); shot.style.setProperty('--dy', ((e.clientY - r.top) / r.height - .5).toFixed(3)); });
+    c.addEventListener('pointerleave', () => { shot.style.setProperty('--dx', 0); shot.style.setProperty('--dy', 0); });
+  });
+
+  /* ---------- reveal sections as they scroll in ---------- */
+  const ins = root.querySelectorAll('.cc-in');
+  if (RM || !('IntersectionObserver' in window)) ins.forEach(x => x.classList.add('cc-seen'));
+  else { const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('cc-seen'); io.unobserve(en.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    ins.forEach((x, i) => { x.style.transitionDelay = (x.classList.contains('cc-card') ? (i % 3) * 90 : 0) + 'ms'; io.observe(x); }); }
+
+  /* ---------- no lone last words in headings and short lines ---------- */
+  root.querySelectorAll('h1, h2, h3, .cc-tag-t, .cc-sub, .cc-hint, .cc-note p, .cc-close-text p').forEach(el => {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let last = null; while (w.nextNode()) if (w.currentNode.nodeValue.trim()) last = w.currentNode;
+    if (last) last.nodeValue = last.nodeValue.replace(/\s+(\S+)\s*$/, ' $1');
+  });
+})();
+</script>
+</body>
+</html>

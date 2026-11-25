@@ -1,0 +1,8 @@
+{
+  "name": "countdown-catalog",
+  "description": "Builds a limited-time sale page for 2 or more offers, with a live countdown bar and offer cards visitors open and save, in your own brand.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Gabriel Omat"
+  }
+}

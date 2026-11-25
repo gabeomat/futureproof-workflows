@@ -34,3 +34,4 @@ Open `/plugin` and update the library to see the latest workflows.
 |---|---|
 | [Meeting follow-up](plugins/meeting-follow-up) | Turns a meeting transcript into a ready-to-send follow-up email: what you covered, what was decided, and who does what next |
 | [Animated wallpapers](plugins/animated-wallpapers) | Puts an animated wallpaper behind your Claude chats, with six to pick from, and draws new ones from a one-line description |
+| [Countdown Catalog](plugins/countdown-catalog) | Builds a limited-time sale page for your offers, in your brand: a live countdown, a card for each offer, and a shortlist visitors save their picks to |
